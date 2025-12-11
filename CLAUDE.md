@@ -1,3 +1,4 @@
+rm -rf github.com/
 # CLAUDE.md - Полезные команды для разработки
 
 ## Команды для запуска
@@ -26,32 +27,38 @@ make clean
 
 ```
 kit_vend/
-├── api/v1/                              # Proto файлы и сгенерированный код
-│   └── vending_machine.proto           # gRPC сервис определения
+├── pb/v1/                               # Protocol Buffers (proto сгенерированный код)
+│   ├── vending_machine.proto           # gRPC сервис определения
+│   ├── vending_machine.pb.go           # Сгенерированный protobuf код
+│   ├── vending_machine_grpc.pb.go      # Сгенерированный gRPC код
+│   └── vending_machine.pb.gw.go        # Сгенерированный REST gateway код
 ├── cmd/server/main.go                  # Entry point
 ├── internal/
-│   ├── api/
+│   ├── api/                            # Kit Vending API интеграция
 │   │   ├── client.go                   # Kit Vending API клиент
-│   │   └── models.go                   # API модели
-│   ├── entity/
-│   │   ├── errors.go                   # Коды ошибок API (таблица 1)
+│   │   └── models.go                   # API модели и структуры
+│   ├── entity/                         # Business entities (Domain layer)
+│   │   ├── errors.go                   # Коды ошибок API (24 кода)
 │   │   └── vending_machine.go          # Бизнес-сущности
-│   ├── grpc/
+│   ├── grpc/                           # gRPC server implementation
 │   │   └── vending_machine_service.go  # gRPC сервис реализация
-│   ├── handler/
-│   │   └── http.go                     # HTTP обработчики
-│   ├── storage/
+│   ├── handler/                        # HTTP обработчики (Interface Adapter)
+│   │   └── http.go                     # REST API endpoints
+│   ├── storage/                        # Repository pattern (Data Access)
 │   │   ├── repository.go               # Интерфейсы репозиториев
 │   │   └── mock.go                     # Mock реализации для dev
-│   └── usecase/
-│       └── vending_machine.go          # Use cases (бизнес-логика)
-├── pkg/
-│   ├── config/config.go                # Конфигурация из env
-│   └── logger/logger.go                # Структурированное логирование
-├── third_party/google/api/             # Google API proto файлы
+│   └── usecase/                        # Use cases (Application layer)
+│       └── vending_machine.go          # Бизнес-логика для всех методов
+├── pkg/                                # Shared packages
+│   ├── config/config.go                # Конфигурация из env переменных
+│   └── logger/logger.go                # Структурированное логирование (slog)
 ├── Makefile                            # Команды для разработки
-├── docker-compose.yaml                 # PostgreSQL для dev
-└── README.md                           # Документация
+├── docker-compose.yaml                 # PostgreSQL для разработки
+├── .env.example                        # Пример переменных окружения
+├── .gitignore                          # Git ignore rules
+├── CLAUDE.md                           # Документация для разработки
+├── go.mod                              # Go модули
+└── go.sum                              # Go зависимости
 ```
 
 ## Архитектура - Clean Architecture
@@ -102,11 +109,11 @@ KIT_PASSWORD=vendor734102
 
 ## Добавление новых методов API
 
-1. Добавьте RPC метод в `api/v1/vending_machine.proto`
+1. Добавьте RPC метод в `pb/v1/vending_machine.proto`
 2. Добавьте сообщения Request/Response в proto файл
 3. Запустите `make proto` для генерации кода
 4. Реализуйте метод в `internal/grpc/vending_machine_service.go`
-5. Добавьте handler в `internal/handler/http.go` (если нужен REST)
+5. Добавьте handler в `internal/handler/http.go` (если нужен REST endpoint)
 6. Реализуйте use case в `internal/usecase/vending_machine.go`
 
 ## Тестирование API

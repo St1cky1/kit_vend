@@ -8,12 +8,12 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"google.golang.org/grpc"
 
-	apiv1 "github.com/St1cky1/kit_vend/api/v1"
 	"github.com/St1cky1/kit_vend/internal/api"
 	grpcserver "github.com/St1cky1/kit_vend/internal/grpc"
 	"github.com/St1cky1/kit_vend/internal/handler"
 	"github.com/St1cky1/kit_vend/internal/storage"
 	"github.com/St1cky1/kit_vend/internal/usecase"
+	pbv1 "github.com/St1cky1/kit_vend/pb/v1"
 	"github.com/St1cky1/kit_vend/pkg/config"
 	"github.com/St1cky1/kit_vend/pkg/logger"
 )
@@ -53,7 +53,7 @@ func startGRPCServer(uc *usecase.VendingMachineUseCase, log *logger.Logger) {
 
 	grpcServer := grpc.NewServer()
 	vmService := grpcserver.NewVendingMachineServiceServer(uc)
-	apiv1.RegisterVendingMachineServiceServer(grpcServer, vmService)
+	pbv1.RegisterVendingMachineServiceServer(grpcServer, vmService)
 
 	log.Info("gRPC server listening", "address", "0.0.0.0:50051")
 	if err := grpcServer.Serve(listener); err != nil {

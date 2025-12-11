@@ -1,0 +1,134 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/St1cky1/kit_vend/api/v1;api";
+
+service VendingMachineService {
+  rpc GetVendingMachineByID(GetVendingMachineByIDRequest) returns (GetVendingMachineByIDResponse);
+  rpc GetSales(GetSalesRequest) returns (GetSalesResponse);
+  rpc GetActions(GetActionsRequest) returns (GetActionsResponse);
+  rpc GetVMStates(GetVMStatesRequest) returns (GetVMStatesResponse);
+  rpc GetEvents(GetEventsRequest) returns (GetEventsResponse);
+  rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
+  rpc GetVendingMachineRemains(GetVendingMachineRemainsRequest) returns (GetVendingMachineRemainsResponse);
+}
+
+message VendingMachine {
+  int32 id = 1;
+  string name = 2;
+  int32 company_id = 3;
+}
+
+message GetVendingMachineByIDRequest {
+  int32 id = 1;
+}
+
+message GetVendingMachineByIDResponse {
+  VendingMachine vending_machine = 1;
+}
+
+message Sale {
+  int32 id = 1;
+  int32 vending_machine_id = 2;
+  int32 goods_id = 3;
+  string goods_name = 4;
+  int32 count = 5;
+  double sum = 6;
+  string date_time = 7;
+  int32 payment_method = 8;
+}
+
+message GetSalesRequest {
+  string from_date = 1;
+  string to_date = 2;
+  int32 vending_machine_id = 3;
+}
+
+message GetSalesResponse {
+  repeated Sale sales = 1;
+}
+
+message Action {
+  int32 id = 1;
+  int32 vending_machine_id = 2;
+  int32 action_type = 3;
+  string date_time = 4;
+}
+
+message GetActionsRequest {
+  string from_date = 1;
+  string to_date = 2;
+  int32 vending_machine_id = 3;
+}
+
+message GetActionsResponse {
+  repeated Action actions = 1;
+}
+
+message VMState {
+  int32 vending_machine_id = 1;
+  string machine_name = 2;
+  bool is_online = 3;
+  string last_activity_time = 4;
+  int32 power_supply = 5;
+  int32 bill_acceptor = 6;
+  int32 coin_acceptor = 7;
+  int32 non_cash_payment = 8;
+  int32 cash_register = 9;
+  int32 qr_display = 10;
+}
+
+message GetVMStatesRequest {
+}
+
+message GetVMStatesResponse {
+  repeated VMState vm_states = 1;
+}
+
+message Event {
+  int32 id = 1;
+  int32 vending_machine_id = 2;
+  int32 event_code = 3;
+  string date_time = 4;
+  string description = 5;
+}
+
+message GetEventsRequest {
+  string from_date = 1;
+  string to_date = 2;
+  int32 vending_machine_id = 3;
+}
+
+message GetEventsResponse {
+  repeated Event events = 1;
+}
+
+message Command {
+  int32 vending_machine_id = 1;
+  int32 command_code = 2;
+}
+
+message SendCommandRequest {
+  Command command = 1;
+}
+
+message SendCommandResponse {
+  int32 result_code = 1;
+  int32 command_id = 2;
+}
+
+message VendingMachineRemains {
+  int32 vending_machine_id = 1;
+  int32 goods_id = 2;
+  string goods_name = 3;
+  int32 count = 4;
+}
+
+message GetVendingMachineRemainsRequest {
+  int32 id = 1;
+}
+
+message GetVendingMachineRemainsResponse {
+  repeated VendingMachineRemains remains = 1;
+}

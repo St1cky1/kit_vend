@@ -3,12 +3,12 @@ package grpc
 import (
 	"context"
 
-	apiv1 "github.com/St1cky1/kit_vend/api/v1"
+	pbv1 "github.com/St1cky1/kit_vend/pb/v1"
 	"github.com/St1cky1/kit_vend/internal/usecase"
 )
 
 type VendingMachineServiceServer struct {
-	apiv1.UnimplementedVendingMachineServiceServer
+	pbv1.UnimplementedVendingMachineServiceServer
 	uc *usecase.VendingMachineUseCase
 }
 
@@ -18,14 +18,14 @@ func NewVendingMachineServiceServer(uc *usecase.VendingMachineUseCase) *VendingM
 	}
 }
 
-func (s *VendingMachineServiceServer) GetVendingMachineByID(ctx context.Context, req *apiv1.GetVendingMachineByIDRequest) (*apiv1.GetVendingMachineByIDResponse, error) {
+func (s *VendingMachineServiceServer) GetVendingMachineByID(ctx context.Context, req *pbv1.GetVendingMachineByIDRequest) (*pbv1.GetVendingMachineByIDResponse, error) {
 	vm, err := s.uc.GetVendingMachineByID(ctx, int(req.Id))
 	if err != nil {
 		return nil, err
 	}
 
-	return &apiv1.GetVendingMachineByIDResponse{
-		VendingMachine: &apiv1.VendingMachine{
+	return &pbv1.GetVendingMachineByIDResponse{
+		VendingMachine: &pbv1.VendingMachine{
 			Id:        int32(vm.Id),
 			Name:      vm.Name,
 			CompanyId: int32(vm.CompanyId),
@@ -33,15 +33,15 @@ func (s *VendingMachineServiceServer) GetVendingMachineByID(ctx context.Context,
 	}, nil
 }
 
-func (s *VendingMachineServiceServer) GetSales(ctx context.Context, req *apiv1.GetSalesRequest) (*apiv1.GetSalesResponse, error) {
+func (s *VendingMachineServiceServer) GetSales(ctx context.Context, req *pbv1.GetSalesRequest) (*pbv1.GetSalesResponse, error) {
 	sales, err := s.uc.GetSales(ctx, int(req.VendingMachineId), req.FromDate, req.ToDate)
 	if err != nil {
 		return nil, err
 	}
 
-	protoSales := make([]*apiv1.Sale, len(sales))
+	protoSales := make([]*pbv1.Sale, len(sales))
 	for i, s := range sales {
-		protoSales[i] = &apiv1.Sale{
+		protoSales[i] = &pbv1.Sale{
 			Id:               int32(s.Id),
 			VendingMachineId: int32(s.VendingMachineId),
 			GoodsId:          int32(s.GoodsId),
@@ -53,20 +53,20 @@ func (s *VendingMachineServiceServer) GetSales(ctx context.Context, req *apiv1.G
 		}
 	}
 
-	return &apiv1.GetSalesResponse{
+	return &pbv1.GetSalesResponse{
 		Sales: protoSales,
 	}, nil
 }
 
-func (s *VendingMachineServiceServer) GetActions(ctx context.Context, req *apiv1.GetActionsRequest) (*apiv1.GetActionsResponse, error) {
+func (s *VendingMachineServiceServer) GetActions(ctx context.Context, req *pbv1.GetActionsRequest) (*pbv1.GetActionsResponse, error) {
 	actions, err := s.uc.GetActions(ctx, int(req.VendingMachineId), req.FromDate, req.ToDate)
 	if err != nil {
 		return nil, err
 	}
 
-	protoActions := make([]*apiv1.Action, len(actions))
+	protoActions := make([]*pbv1.Action, len(actions))
 	for i, a := range actions {
-		protoActions[i] = &apiv1.Action{
+		protoActions[i] = &pbv1.Action{
 			Id:               int32(a.Id),
 			VendingMachineId: int32(a.VendingMachineId),
 			ActionType:       int32(a.ActionType),
@@ -74,20 +74,20 @@ func (s *VendingMachineServiceServer) GetActions(ctx context.Context, req *apiv1
 		}
 	}
 
-	return &apiv1.GetActionsResponse{
+	return &pbv1.GetActionsResponse{
 		Actions: protoActions,
 	}, nil
 }
 
-func (s *VendingMachineServiceServer) GetVMStates(ctx context.Context, req *apiv1.GetVMStatesRequest) (*apiv1.GetVMStatesResponse, error) {
+func (s *VendingMachineServiceServer) GetVMStates(ctx context.Context, req *pbv1.GetVMStatesRequest) (*pbv1.GetVMStatesResponse, error) {
 	states, err := s.uc.GetVMStates(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	protoStates := make([]*apiv1.VMState, len(states))
+	protoStates := make([]*pbv1.VMState, len(states))
 	for i, st := range states {
-		protoStates[i] = &apiv1.VMState{
+		protoStates[i] = &pbv1.VMState{
 			VendingMachineId: int32(st.VendingMachineId),
 			MachineName:      st.MachineName,
 			IsOnline:         st.IsOnline,
@@ -101,20 +101,20 @@ func (s *VendingMachineServiceServer) GetVMStates(ctx context.Context, req *apiv
 		}
 	}
 
-	return &apiv1.GetVMStatesResponse{
+	return &pbv1.GetVMStatesResponse{
 		VmStates: protoStates,
 	}, nil
 }
 
-func (s *VendingMachineServiceServer) GetEvents(ctx context.Context, req *apiv1.GetEventsRequest) (*apiv1.GetEventsResponse, error) {
+func (s *VendingMachineServiceServer) GetEvents(ctx context.Context, req *pbv1.GetEventsRequest) (*pbv1.GetEventsResponse, error) {
 	events, err := s.uc.GetEvents(ctx, int(req.VendingMachineId), req.FromDate, req.ToDate)
 	if err != nil {
 		return nil, err
 	}
 
-	protoEvents := make([]*apiv1.Event, len(events))
+	protoEvents := make([]*pbv1.Event, len(events))
 	for i, e := range events {
-		protoEvents[i] = &apiv1.Event{
+		protoEvents[i] = &pbv1.Event{
 			Id:               int32(e.Id),
 			VendingMachineId: int32(e.VendingMachineId),
 			EventCode:        int32(e.EventCode),
@@ -123,32 +123,32 @@ func (s *VendingMachineServiceServer) GetEvents(ctx context.Context, req *apiv1.
 		}
 	}
 
-	return &apiv1.GetEventsResponse{
+	return &pbv1.GetEventsResponse{
 		Events: protoEvents,
 	}, nil
 }
 
-func (s *VendingMachineServiceServer) SendCommand(ctx context.Context, req *apiv1.SendCommandRequest) (*apiv1.SendCommandResponse, error) {
+func (s *VendingMachineServiceServer) SendCommand(ctx context.Context, req *pbv1.SendCommandRequest) (*pbv1.SendCommandResponse, error) {
 	err := s.uc.SendCommand(ctx, int(req.Command.VendingMachineId), int(req.Command.CommandCode))
 	if err != nil {
 		return nil, err
 	}
 
-	return &apiv1.SendCommandResponse{
+	return &pbv1.SendCommandResponse{
 		ResultCode: 0,
 		CommandId:  1,
 	}, nil
 }
 
-func (s *VendingMachineServiceServer) GetVendingMachineRemains(ctx context.Context, req *apiv1.GetVendingMachineRemainsRequest) (*apiv1.GetVendingMachineRemainsResponse, error) {
+func (s *VendingMachineServiceServer) GetVendingMachineRemains(ctx context.Context, req *pbv1.GetVendingMachineRemainsRequest) (*pbv1.GetVendingMachineRemainsResponse, error) {
 	remains, err := s.uc.GetVendingMachineRemains(ctx, int(req.Id))
 	if err != nil {
 		return nil, err
 	}
 
-	protoRemains := make([]*apiv1.VendingMachineRemains, len(remains))
+	protoRemains := make([]*pbv1.VendingMachineRemains, len(remains))
 	for i, r := range remains {
-		protoRemains[i] = &apiv1.VendingMachineRemains{
+		protoRemains[i] = &pbv1.VendingMachineRemains{
 			VendingMachineId: int32(r.VendingMachineId),
 			GoodsId:          int32(r.GoodsId),
 			GoodsName:        r.GoodsName,
@@ -156,7 +156,7 @@ func (s *VendingMachineServiceServer) GetVendingMachineRemains(ctx context.Conte
 		}
 	}
 
-	return &apiv1.GetVendingMachineRemainsResponse{
+	return &pbv1.GetVendingMachineRemainsResponse{
 		Remains: protoRemains,
 	}, nil
 }
