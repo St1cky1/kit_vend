@@ -18,9 +18,9 @@ type GetCompaniesResponse struct {
 }
 
 type Modem struct {
-	Id              int    `json:"Id"`
-	Name            string `json:"Name"`
-	VendingMachineId int   `json:"VendingMachineId"`
+	Id               int    `json:"Id"`
+	Name             string `json:"Name"`
+	VendingMachineId int    `json:"VendingMachineId"`
 }
 
 type GetModemsResponse struct {
@@ -29,18 +29,18 @@ type GetModemsResponse struct {
 }
 
 type VendingMachine struct {
-	Id       int    `json:"Id"`
-	Name     string `json:"Name"`
-	CompanyId int   `json:"CompanyId"`
+	Id        int    `json:"Id"`
+	Name      string `json:"Name"`
+	CompanyId int    `json:"CompanyId"`
 }
 
 type GetVendingMachinesResponse struct {
-	ResultCode       int              `json:"ResultCode"`
-	VendingMachines  []VendingMachine `json:"VendingMachines"`
+	ResultCode      int              `json:"ResultCode"`
+	VendingMachines []VendingMachine `json:"VendingMachines"`
 }
 
 type Filter struct {
-	FromDate         string `json:"FromDate"`
+	UpDate           string `json:"UpDate"`
 	ToDate           string `json:"ToDate"`
 	CompanyId        int    `json:"CompanyId,omitempty"`
 	VendingMachineId int    `json:"VendingMachineId,omitempty"`
@@ -52,14 +52,14 @@ type Command struct {
 }
 
 type Sale struct {
-	Id               int    `json:"Id"`
-	VendingMachineId int    `json:"VendingMachineId"`
-	GoodsId          int    `json:"GoodsId"`
-	GoodsName        string `json:"GoodsName"`
-	Count            int    `json:"Count"`
+	Id               int     `json:"Id"`
+	VendingMachineId int     `json:"VendingMachineId"`
+	GoodsId          int     `json:"GoodsId"`
+	GoodsName        string  `json:"GoodsName"`
+	Count            int     `json:"Count"`
 	Sum              float64 `json:"Sum"`
-	DateTime         string `json:"DateTime"`
-	PaymentMethod    int    `json:"PaymentMethod"`
+	DateTime         string  `json:"DateTime"`
+	PaymentMethod    int     `json:"PaymentMethod"`
 }
 
 type GetSalesResponse struct {
@@ -106,7 +106,7 @@ type VMState struct {
 }
 
 type GetVMStatesResponse struct {
-	ResultCode int      `json:"ResultCode"`
+	ResultCode int       `json:"ResultCode"`
 	VMStates   []VMState `json:"VMStates"`
 }
 
@@ -118,7 +118,7 @@ type VendingMachineRemains struct {
 }
 
 type GetVendingMachineRemainsResponse struct {
-	ResultCode int                      `json:"ResultCode"`
+	ResultCode int                     `json:"ResultCode"`
 	Remains    []VendingMachineRemains `json:"Remains"`
 }
 
