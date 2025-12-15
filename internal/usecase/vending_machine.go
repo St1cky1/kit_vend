@@ -9,11 +9,11 @@ import (
 )
 
 type VendingMachineUseCase struct {
-	kitClient *api.Client
-	vmRepo    storage.VendingMachineRepository
-	saleRepo  storage.SaleRepository
-	actionRepo storage.ActionRepository
-	eventRepo  storage.EventRepository
+	kitClient   *api.Client
+	vmRepo      storage.VendingMachineRepository
+	saleRepo    storage.SaleRepository
+	actionRepo  storage.ActionRepository
+	eventRepo   storage.EventRepository
 	vmStateRepo storage.VMStateRepository
 	remainsRepo storage.VendingMachineRemainsRepository
 }
@@ -42,10 +42,10 @@ func (uc *VendingMachineUseCase) GetVendingMachineByID(ctx context.Context, id i
 	return uc.vmRepo.GetByID(ctx, id)
 }
 
-func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId int, fromDate, toDate string) ([]entity.Sale, error) {
+func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Sale, error) {
 	filter := api.Filter{
-		FromDate: fromDate,
-		ToDate:   toDate,
+		UpDate: upDate,
+		ToDate: toDate,
 	}
 	if vendingMachineId > 0 {
 		filter.VendingMachineId = vendingMachineId
@@ -74,10 +74,10 @@ func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId 
 	return sales, nil
 }
 
-func (uc *VendingMachineUseCase) GetActions(ctx context.Context, vendingMachineId int, fromDate, toDate string) ([]entity.Action, error) {
+func (uc *VendingMachineUseCase) GetActions(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Action, error) {
 	filter := api.Filter{
-		FromDate: fromDate,
-		ToDate:   toDate,
+		UpDate: upDate,
+		ToDate: toDate,
 	}
 	if vendingMachineId > 0 {
 		filter.VendingMachineId = vendingMachineId
@@ -128,10 +128,10 @@ func (uc *VendingMachineUseCase) GetVMStates(ctx context.Context) ([]entity.VMSt
 	return states, nil
 }
 
-func (uc *VendingMachineUseCase) GetEvents(ctx context.Context, vendingMachineId int, fromDate, toDate string) ([]entity.Event, error) {
+func (uc *VendingMachineUseCase) GetEvents(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Event, error) {
 	filter := api.Filter{
-		FromDate: fromDate,
-		ToDate:   toDate,
+		UpDate: upDate,
+		ToDate: toDate,
 	}
 	if vendingMachineId > 0 {
 		filter.VendingMachineId = vendingMachineId
