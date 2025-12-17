@@ -64,10 +64,8 @@ func (c *Client) Call(method string, extra map[string]interface{}, v interface{}
 	payload := map[string]interface{}{
 		"Auth": c.autPayload(),
 	}
-	if extra != nil {
-		for k, v := range extra {
-			payload[k] = v
-		}
+	for k, v := range extra {
+		payload[k] = v
 	}
 	body, err := json.MarshalIndent(payload, "", " ")
 	if err != nil {

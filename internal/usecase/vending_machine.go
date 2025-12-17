@@ -38,10 +38,12 @@ func NewVendingMachineUseCase(
 	}
 }
 
+// получение автомата по id
 func (uc *VendingMachineUseCase) GetVendingMachineByID(ctx context.Context, id int) (*entity.VendingMachine, error) {
 	return uc.vmRepo.GetByID(ctx, id)
 }
 
+// получение списка продаж
 func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Sale, error) {
 	filter := api.Filter{
 		UpDate: upDate,
@@ -74,6 +76,7 @@ func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId 
 	return sales, nil
 }
 
+// список действий (обслуживания и загрузки)
 func (uc *VendingMachineUseCase) GetActions(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Action, error) {
 	filter := api.Filter{
 		UpDate: upDate,
@@ -102,6 +105,7 @@ func (uc *VendingMachineUseCase) GetActions(ctx context.Context, vendingMachineI
 	return actions, nil
 }
 
+// состояние всех автоматов
 func (uc *VendingMachineUseCase) GetVMStates(ctx context.Context) ([]entity.VMState, error) {
 	var result api.GetVMStatesResponse
 	err := uc.kitClient.Call("GetVMStates", nil, &result)
@@ -128,6 +132,7 @@ func (uc *VendingMachineUseCase) GetVMStates(ctx context.Context) ([]entity.VMSt
 	return states, nil
 }
 
+// события
 func (uc *VendingMachineUseCase) GetEvents(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Event, error) {
 	filter := api.Filter{
 		UpDate: upDate,
@@ -157,6 +162,7 @@ func (uc *VendingMachineUseCase) GetEvents(ctx context.Context, vendingMachineId
 	return events, nil
 }
 
+// отправить команду автомату
 func (uc *VendingMachineUseCase) SendCommand(ctx context.Context, vendingMachineId int, commandCode int) error {
 	command := api.Command{
 		CommandCode:      commandCode,
@@ -172,6 +178,7 @@ func (uc *VendingMachineUseCase) SendCommand(ctx context.Context, vendingMachine
 	return nil
 }
 
+// остатки товара
 func (uc *VendingMachineUseCase) GetVendingMachineRemains(ctx context.Context, id int) ([]entity.VendingMachineRemains, error) {
 	var result api.GetVendingMachineRemainsResponse
 	err := uc.kitClient.Call("GetVendingMachineRemains", map[string]interface{}{"Id": id}, &result)
