@@ -4,12 +4,13 @@ import (
 	"context"
 
 	"github.com/St1cky1/kit_vend/internal/api"
+	"github.com/St1cky1/kit_vend/internal/api/kit_vending"
 	"github.com/St1cky1/kit_vend/internal/entity"
 	"github.com/St1cky1/kit_vend/internal/storage"
 )
 
 type VendingMachineUseCase struct {
-	kitClient   *api.Client
+	kitClient   *kit_vending.Client
 	vmRepo      storage.VendingMachineRepository
 	saleRepo    storage.SaleRepository
 	actionRepo  storage.ActionRepository
@@ -19,7 +20,7 @@ type VendingMachineUseCase struct {
 }
 
 func NewVendingMachineUseCase(
-	kitClient *api.Client,
+	kitClient *kit_vending.Client,
 	vmRepo storage.VendingMachineRepository,
 	saleRepo storage.SaleRepository,
 	actionRepo storage.ActionRepository,

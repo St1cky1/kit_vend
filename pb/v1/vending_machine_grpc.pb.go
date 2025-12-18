@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             v6.33.1
-// source: api/v1/vending_machine.proto
+// source: pb/v1/vending_machine.proto
 
-package api
+package v1
 
 import (
 	context "context"
@@ -345,5 +345,5 @@ var VendingMachineService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/v1/vending_machine.proto",
+	Metadata: "pb/v1/vending_machine.proto",
 }

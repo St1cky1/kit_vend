@@ -1,30 +1,29 @@
 package main
 
 import (
+	"context"
 	"net"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/St1cky1/kit_vend/internal/api"
+	"github.com/St1cky1/kit_vend/internal/api/kit_vending"
 	grpcserver "github.com/St1cky1/kit_vend/internal/grpc"
-	"github.com/St1cky1/kit_vend/internal/handler"
 	"github.com/St1cky1/kit_vend/internal/storage"
 	"github.com/St1cky1/kit_vend/internal/usecase"
 	pbv1 "github.com/St1cky1/kit_vend/pb/v1"
 	"github.com/St1cky1/kit_vend/pkg/config"
-	"github.com/St1cky1/kit_vend/pkg/logger"
 )
 
 func main() {
 	cfg := config.Load()
-	log := logger.New(cfg.LogLevel)
+	log := grpcserver.NewLogger(cfg.LogLevel)
 
-	log.Info("Starting Kit Vending Backend", "port", cfg.Server.Port)
+	log.Info("Starting Kit Vending Backend", "http_port", cfg.Server.Port)
 
-	kitClient := api.NewClient(cfg.KitVendingAPI.CompanyId, cfg.KitVendingAPI.Login, cfg.KitVendingAPI.Password)
+	kitClient := kit_vending.NewClient(cfg.KitVendingAPI.CompanyId, cfg.KitVendingAPI.Login, cfg.KitVendingAPI.Password)
 	if cfg.LogLevel == "debug" {
 		kitClient.SetDebug(true)
 		log.Info("Debug mode enabled - Kit Vending API responses will be logged")
@@ -39,37 +38,49 @@ func main() {
 
 	uc := usecase.NewVendingMachineUseCase(kitClient, vmRepo, saleRepo, actionRepo, eventRepo, vmStateRepo, remainsRepo)
 
-	go startGRPCServer(uc, log)
+	grpcPort := ":50051"
+	httpPort := ":" + cfg.Server.Port
 
-	startHTTPServer(uc, log, cfg.Server.Port)
-}
-
-func startGRPCServer(uc *usecase.VendingMachineUseCase, log *logger.Logger) {
-	listener, err := net.Listen("tcp", ":50051")
+	grpcListener, err := net.Listen("tcp", grpcPort)
 	if err != nil {
 		log.Error("failed to listen on gRPC port", "error", err)
 		return
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(grpcserver.UnaryServerLoggingInterceptor(log)),
+		grpc.StreamInterceptor(grpcserver.StreamServerLoggingInterceptor(log)),
+	)
+
 	vmService := grpcserver.NewVendingMachineServiceServer(uc)
 	pbv1.RegisterVendingMachineServiceServer(grpcServer, vmService)
 
-	log.Info("gRPC server listening", "address", "0.0.0.0:50051")
-	if err := grpcServer.Serve(listener); err != nil {
-		log.Error("gRPC server error", "error", err)
+	go func() {
+		log.Info("gRPC server listening", "address", "0.0.0.0:50051")
+		if err := grpcServer.Serve(grpcListener); err != nil {
+			log.Error("gRPC server error", "error", err)
+		}
+	}()
+
+	conn, err := grpc.NewClient(
+		"localhost:50051",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		log.Error("failed to dial gRPC server", "error", err)
+		return
 	}
-}
+	defer conn.Close()
 
-func startHTTPServer(uc *usecase.VendingMachineUseCase, log *logger.Logger, port string) {
-	h := handler.NewVendingMachineHandler(uc, log)
+	gwmux := runtime.NewServeMux()
+	if err := pbv1.RegisterVendingMachineServiceHandler(context.Background(), gwmux, conn); err != nil {
+		log.Error("failed to register gateway", "error", err)
+		return
+	}
 
-	r := chi.NewRouter()
-
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-
-	r.Get("/api/v1/health", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+	mux.Handle("/api/", gwmux)
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		if _, err := w.Write([]byte(`{"status":"ok"}`)); err != nil {
@@ -77,16 +88,8 @@ func startHTTPServer(uc *usecase.VendingMachineUseCase, log *logger.Logger, port
 		}
 	})
 
-	r.Get("/api/v1/vending-machines/{id}", h.GetVendingMachineByID)
-	r.Get("/api/v1/sales", h.GetSales)
-	r.Get("/api/v1/actions", h.GetActions)
-	r.Get("/api/v1/vm-states", h.GetVMStates)
-	r.Get("/api/v1/events", h.GetEvents)
-	r.Post("/api/v1/commands", h.SendCommand)
-	r.Get("/api/v1/vending-machines/{id}/remains", h.GetVendingMachineRemains)
-
-	log.Info("HTTP server started", "address", "0.0.0.0:"+port)
-	if err := http.ListenAndServe(":"+port, r); err != nil {
+	log.Info("HTTP server started", "address", "0.0.0.0"+httpPort)
+	if err := http.ListenAndServe(httpPort, mux); err != nil {
 		log.Error("HTTP server error", "error", err)
 	}
 }

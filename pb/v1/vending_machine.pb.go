@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v6.33.1
-// source: api/v1/vending_machine.proto
+// source: pb/v1/vending_machine.proto
 
-package api
+package v1
 
 import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -33,7 +33,7 @@ type VendingMachine struct {
 
 func (x *VendingMachine) Reset() {
 	*x = VendingMachine{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[0]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *VendingMachine) String() string {
 func (*VendingMachine) ProtoMessage() {}
 
 func (x *VendingMachine) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[0]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *VendingMachine) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VendingMachine.ProtoReflect.Descriptor instead.
 func (*VendingMachine) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{0}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *VendingMachine) GetId() int32 {
@@ -91,7 +91,7 @@ type GetVendingMachineByIDRequest struct {
 
 func (x *GetVendingMachineByIDRequest) Reset() {
 	*x = GetVendingMachineByIDRequest{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[1]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -103,7 +103,7 @@ func (x *GetVendingMachineByIDRequest) String() string {
 func (*GetVendingMachineByIDRequest) ProtoMessage() {}
 
 func (x *GetVendingMachineByIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[1]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -116,7 +116,7 @@ func (x *GetVendingMachineByIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVendingMachineByIDRequest.ProtoReflect.Descriptor instead.
 func (*GetVendingMachineByIDRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{1}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetVendingMachineByIDRequest) GetId() int32 {
@@ -135,7 +135,7 @@ type GetVendingMachineByIDResponse struct {
 
 func (x *GetVendingMachineByIDResponse) Reset() {
 	*x = GetVendingMachineByIDResponse{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[2]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -147,7 +147,7 @@ func (x *GetVendingMachineByIDResponse) String() string {
 func (*GetVendingMachineByIDResponse) ProtoMessage() {}
 
 func (x *GetVendingMachineByIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[2]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -160,7 +160,7 @@ func (x *GetVendingMachineByIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVendingMachineByIDResponse.ProtoReflect.Descriptor instead.
 func (*GetVendingMachineByIDResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{2}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetVendingMachineByIDResponse) GetVendingMachine() *VendingMachine {
@@ -186,7 +186,7 @@ type Sale struct {
 
 func (x *Sale) Reset() {
 	*x = Sale{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[3]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -198,7 +198,7 @@ func (x *Sale) String() string {
 func (*Sale) ProtoMessage() {}
 
 func (x *Sale) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[3]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -211,7 +211,7 @@ func (x *Sale) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Sale.ProtoReflect.Descriptor instead.
 func (*Sale) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{3}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Sale) GetId() int32 {
@@ -281,7 +281,7 @@ type GetSalesRequest struct {
 
 func (x *GetSalesRequest) Reset() {
 	*x = GetSalesRequest{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[4]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -293,7 +293,7 @@ func (x *GetSalesRequest) String() string {
 func (*GetSalesRequest) ProtoMessage() {}
 
 func (x *GetSalesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[4]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -306,7 +306,7 @@ func (x *GetSalesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSalesRequest.ProtoReflect.Descriptor instead.
 func (*GetSalesRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{4}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetSalesRequest) GetFromDate() string {
@@ -339,7 +339,7 @@ type GetSalesResponse struct {
 
 func (x *GetSalesResponse) Reset() {
 	*x = GetSalesResponse{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[5]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -351,7 +351,7 @@ func (x *GetSalesResponse) String() string {
 func (*GetSalesResponse) ProtoMessage() {}
 
 func (x *GetSalesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[5]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -364,7 +364,7 @@ func (x *GetSalesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSalesResponse.ProtoReflect.Descriptor instead.
 func (*GetSalesResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{5}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetSalesResponse) GetSales() []*Sale {
@@ -386,7 +386,7 @@ type Action struct {
 
 func (x *Action) Reset() {
 	*x = Action{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[6]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -398,7 +398,7 @@ func (x *Action) String() string {
 func (*Action) ProtoMessage() {}
 
 func (x *Action) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[6]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -411,7 +411,7 @@ func (x *Action) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Action.ProtoReflect.Descriptor instead.
 func (*Action) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{6}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Action) GetId() int32 {
@@ -453,7 +453,7 @@ type GetActionsRequest struct {
 
 func (x *GetActionsRequest) Reset() {
 	*x = GetActionsRequest{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[7]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -465,7 +465,7 @@ func (x *GetActionsRequest) String() string {
 func (*GetActionsRequest) ProtoMessage() {}
 
 func (x *GetActionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[7]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -478,7 +478,7 @@ func (x *GetActionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetActionsRequest.ProtoReflect.Descriptor instead.
 func (*GetActionsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{7}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetActionsRequest) GetFromDate() string {
@@ -511,7 +511,7 @@ type GetActionsResponse struct {
 
 func (x *GetActionsResponse) Reset() {
 	*x = GetActionsResponse{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[8]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -523,7 +523,7 @@ func (x *GetActionsResponse) String() string {
 func (*GetActionsResponse) ProtoMessage() {}
 
 func (x *GetActionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[8]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -536,7 +536,7 @@ func (x *GetActionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetActionsResponse.ProtoReflect.Descriptor instead.
 func (*GetActionsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{8}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetActionsResponse) GetActions() []*Action {
@@ -564,7 +564,7 @@ type VMState struct {
 
 func (x *VMState) Reset() {
 	*x = VMState{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[9]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -576,7 +576,7 @@ func (x *VMState) String() string {
 func (*VMState) ProtoMessage() {}
 
 func (x *VMState) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[9]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -589,7 +589,7 @@ func (x *VMState) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VMState.ProtoReflect.Descriptor instead.
 func (*VMState) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{9}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *VMState) GetVendingMachineId() int32 {
@@ -670,7 +670,7 @@ type GetVMStatesRequest struct {
 
 func (x *GetVMStatesRequest) Reset() {
 	*x = GetVMStatesRequest{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[10]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -682,7 +682,7 @@ func (x *GetVMStatesRequest) String() string {
 func (*GetVMStatesRequest) ProtoMessage() {}
 
 func (x *GetVMStatesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[10]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -695,7 +695,7 @@ func (x *GetVMStatesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVMStatesRequest.ProtoReflect.Descriptor instead.
 func (*GetVMStatesRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{10}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{10}
 }
 
 type GetVMStatesResponse struct {
@@ -707,7 +707,7 @@ type GetVMStatesResponse struct {
 
 func (x *GetVMStatesResponse) Reset() {
 	*x = GetVMStatesResponse{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[11]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -719,7 +719,7 @@ func (x *GetVMStatesResponse) String() string {
 func (*GetVMStatesResponse) ProtoMessage() {}
 
 func (x *GetVMStatesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[11]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -732,7 +732,7 @@ func (x *GetVMStatesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVMStatesResponse.ProtoReflect.Descriptor instead.
 func (*GetVMStatesResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{11}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GetVMStatesResponse) GetVmStates() []*VMState {
@@ -755,7 +755,7 @@ type Event struct {
 
 func (x *Event) Reset() {
 	*x = Event{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[12]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -767,7 +767,7 @@ func (x *Event) String() string {
 func (*Event) ProtoMessage() {}
 
 func (x *Event) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[12]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -780,7 +780,7 @@ func (x *Event) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Event.ProtoReflect.Descriptor instead.
 func (*Event) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{12}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Event) GetId() int32 {
@@ -829,7 +829,7 @@ type GetEventsRequest struct {
 
 func (x *GetEventsRequest) Reset() {
 	*x = GetEventsRequest{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[13]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -841,7 +841,7 @@ func (x *GetEventsRequest) String() string {
 func (*GetEventsRequest) ProtoMessage() {}
 
 func (x *GetEventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[13]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -854,7 +854,7 @@ func (x *GetEventsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEventsRequest.ProtoReflect.Descriptor instead.
 func (*GetEventsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{13}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetEventsRequest) GetFromDate() string {
@@ -887,7 +887,7 @@ type GetEventsResponse struct {
 
 func (x *GetEventsResponse) Reset() {
 	*x = GetEventsResponse{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[14]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -899,7 +899,7 @@ func (x *GetEventsResponse) String() string {
 func (*GetEventsResponse) ProtoMessage() {}
 
 func (x *GetEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[14]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -912,7 +912,7 @@ func (x *GetEventsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEventsResponse.ProtoReflect.Descriptor instead.
 func (*GetEventsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{14}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *GetEventsResponse) GetEvents() []*Event {
@@ -932,7 +932,7 @@ type Command struct {
 
 func (x *Command) Reset() {
 	*x = Command{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[15]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -944,7 +944,7 @@ func (x *Command) String() string {
 func (*Command) ProtoMessage() {}
 
 func (x *Command) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[15]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -957,7 +957,7 @@ func (x *Command) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Command.ProtoReflect.Descriptor instead.
 func (*Command) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{15}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Command) GetVendingMachineId() int32 {
@@ -983,7 +983,7 @@ type SendCommandRequest struct {
 
 func (x *SendCommandRequest) Reset() {
 	*x = SendCommandRequest{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[16]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -995,7 +995,7 @@ func (x *SendCommandRequest) String() string {
 func (*SendCommandRequest) ProtoMessage() {}
 
 func (x *SendCommandRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[16]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1008,7 +1008,7 @@ func (x *SendCommandRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendCommandRequest.ProtoReflect.Descriptor instead.
 func (*SendCommandRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{16}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *SendCommandRequest) GetCommand() *Command {
@@ -1028,7 +1028,7 @@ type SendCommandResponse struct {
 
 func (x *SendCommandResponse) Reset() {
 	*x = SendCommandResponse{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[17]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1040,7 +1040,7 @@ func (x *SendCommandResponse) String() string {
 func (*SendCommandResponse) ProtoMessage() {}
 
 func (x *SendCommandResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[17]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1053,7 +1053,7 @@ func (x *SendCommandResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendCommandResponse.ProtoReflect.Descriptor instead.
 func (*SendCommandResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{17}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *SendCommandResponse) GetResultCode() int32 {
@@ -1082,7 +1082,7 @@ type VendingMachineRemains struct {
 
 func (x *VendingMachineRemains) Reset() {
 	*x = VendingMachineRemains{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[18]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1094,7 +1094,7 @@ func (x *VendingMachineRemains) String() string {
 func (*VendingMachineRemains) ProtoMessage() {}
 
 func (x *VendingMachineRemains) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[18]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1107,7 +1107,7 @@ func (x *VendingMachineRemains) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VendingMachineRemains.ProtoReflect.Descriptor instead.
 func (*VendingMachineRemains) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{18}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *VendingMachineRemains) GetVendingMachineId() int32 {
@@ -1147,7 +1147,7 @@ type GetVendingMachineRemainsRequest struct {
 
 func (x *GetVendingMachineRemainsRequest) Reset() {
 	*x = GetVendingMachineRemainsRequest{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[19]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1159,7 +1159,7 @@ func (x *GetVendingMachineRemainsRequest) String() string {
 func (*GetVendingMachineRemainsRequest) ProtoMessage() {}
 
 func (x *GetVendingMachineRemainsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[19]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1172,7 +1172,7 @@ func (x *GetVendingMachineRemainsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVendingMachineRemainsRequest.ProtoReflect.Descriptor instead.
 func (*GetVendingMachineRemainsRequest) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{19}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetVendingMachineRemainsRequest) GetId() int32 {
@@ -1191,7 +1191,7 @@ type GetVendingMachineRemainsResponse struct {
 
 func (x *GetVendingMachineRemainsResponse) Reset() {
 	*x = GetVendingMachineRemainsResponse{}
-	mi := &file_api_v1_vending_machine_proto_msgTypes[20]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1203,7 +1203,7 @@ func (x *GetVendingMachineRemainsResponse) String() string {
 func (*GetVendingMachineRemainsResponse) ProtoMessage() {}
 
 func (x *GetVendingMachineRemainsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_v1_vending_machine_proto_msgTypes[20]
+	mi := &file_pb_v1_vending_machine_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1216,7 +1216,7 @@ func (x *GetVendingMachineRemainsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVendingMachineRemainsResponse.ProtoReflect.Descriptor instead.
 func (*GetVendingMachineRemainsResponse) Descriptor() ([]byte, []int) {
-	return file_api_v1_vending_machine_proto_rawDescGZIP(), []int{20}
+	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetVendingMachineRemainsResponse) GetRemains() []*VendingMachineRemains {
@@ -1226,11 +1226,11 @@ func (x *GetVendingMachineRemainsResponse) GetRemains() []*VendingMachineRemains
 	return nil
 }
 
-var File_api_v1_vending_machine_proto protoreflect.FileDescriptor
+var File_pb_v1_vending_machine_proto protoreflect.FileDescriptor
 
-const file_api_v1_vending_machine_proto_rawDesc = "" +
+const file_pb_v1_vending_machine_proto_rawDesc = "" +
 	"\n" +
-	"\x1capi/v1/vending_machine.proto\x12\x06api.v1\x1a\x1cgoogle/api/annotations.proto\"S\n" +
+	"\x1bpb/v1/vending_machine.proto\x12\x06api.v1\x1a\x1cgoogle/api/annotations.proto\"S\n" +
 	"\x0eVendingMachine\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1d\n" +
@@ -1325,22 +1325,22 @@ const file_api_v1_vending_machine_proto_rawDesc = "" +
 	"\vGetVMStates\x12\x1a.api.v1.GetVMStatesRequest\x1a\x1b.api.v1.GetVMStatesResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/v1/vm-states\x12X\n" +
 	"\tGetEvents\x12\x18.api.v1.GetEventsRequest\x1a\x19.api.v1.GetEventsResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/v1/events\x12c\n" +
 	"\vSendCommand\x12\x1a.api.v1.SendCommandRequest\x1a\x1b.api.v1.SendCommandResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/commands\x12\x9c\x01\n" +
-	"\x18GetVendingMachineRemains\x12'.api.v1.GetVendingMachineRemainsRequest\x1a(.api.v1.GetVendingMachineRemainsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/api/v1/vending-machines/{id}/remainsB(Z&github.com/St1cky1/kit_vend/api/v1;apib\x06proto3"
+	"\x18GetVendingMachineRemains\x12'.api.v1.GetVendingMachineRemainsRequest\x1a(.api.v1.GetVendingMachineRemainsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/api/v1/vending-machines/{id}/remainsB&Z$github.com/St1cky1/kit_vend/pb/v1;v1b\x06proto3"
 
 var (
-	file_api_v1_vending_machine_proto_rawDescOnce sync.Once
-	file_api_v1_vending_machine_proto_rawDescData []byte
+	file_pb_v1_vending_machine_proto_rawDescOnce sync.Once
+	file_pb_v1_vending_machine_proto_rawDescData []byte
 )
 
-func file_api_v1_vending_machine_proto_rawDescGZIP() []byte {
-	file_api_v1_vending_machine_proto_rawDescOnce.Do(func() {
-		file_api_v1_vending_machine_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_v1_vending_machine_proto_rawDesc), len(file_api_v1_vending_machine_proto_rawDesc)))
+func file_pb_v1_vending_machine_proto_rawDescGZIP() []byte {
+	file_pb_v1_vending_machine_proto_rawDescOnce.Do(func() {
+		file_pb_v1_vending_machine_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pb_v1_vending_machine_proto_rawDesc), len(file_pb_v1_vending_machine_proto_rawDesc)))
 	})
-	return file_api_v1_vending_machine_proto_rawDescData
+	return file_pb_v1_vending_machine_proto_rawDescData
 }
 
-var file_api_v1_vending_machine_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
-var file_api_v1_vending_machine_proto_goTypes = []any{
+var file_pb_v1_vending_machine_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_pb_v1_vending_machine_proto_goTypes = []any{
 	(*VendingMachine)(nil),                   // 0: api.v1.VendingMachine
 	(*GetVendingMachineByIDRequest)(nil),     // 1: api.v1.GetVendingMachineByIDRequest
 	(*GetVendingMachineByIDResponse)(nil),    // 2: api.v1.GetVendingMachineByIDResponse
@@ -1363,7 +1363,7 @@ var file_api_v1_vending_machine_proto_goTypes = []any{
 	(*GetVendingMachineRemainsRequest)(nil),  // 19: api.v1.GetVendingMachineRemainsRequest
 	(*GetVendingMachineRemainsResponse)(nil), // 20: api.v1.GetVendingMachineRemainsResponse
 }
-var file_api_v1_vending_machine_proto_depIdxs = []int32{
+var file_pb_v1_vending_machine_proto_depIdxs = []int32{
 	0,  // 0: api.v1.GetVendingMachineByIDResponse.vending_machine:type_name -> api.v1.VendingMachine
 	3,  // 1: api.v1.GetSalesResponse.sales:type_name -> api.v1.Sale
 	6,  // 2: api.v1.GetActionsResponse.actions:type_name -> api.v1.Action
@@ -1392,26 +1392,26 @@ var file_api_v1_vending_machine_proto_depIdxs = []int32{
 	0,  // [0:7] is the sub-list for field type_name
 }
 
-func init() { file_api_v1_vending_machine_proto_init() }
-func file_api_v1_vending_machine_proto_init() {
-	if File_api_v1_vending_machine_proto != nil {
+func init() { file_pb_v1_vending_machine_proto_init() }
+func file_pb_v1_vending_machine_proto_init() {
+	if File_pb_v1_vending_machine_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_v1_vending_machine_proto_rawDesc), len(file_api_v1_vending_machine_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pb_v1_vending_machine_proto_rawDesc), len(file_pb_v1_vending_machine_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_v1_vending_machine_proto_goTypes,
-		DependencyIndexes: file_api_v1_vending_machine_proto_depIdxs,
-		MessageInfos:      file_api_v1_vending_machine_proto_msgTypes,
+		GoTypes:           file_pb_v1_vending_machine_proto_goTypes,
+		DependencyIndexes: file_pb_v1_vending_machine_proto_depIdxs,
+		MessageInfos:      file_pb_v1_vending_machine_proto_msgTypes,
 	}.Build()
-	File_api_v1_vending_machine_proto = out.File
-	file_api_v1_vending_machine_proto_goTypes = nil
-	file_api_v1_vending_machine_proto_depIdxs = nil
+	File_pb_v1_vending_machine_proto = out.File
+	file_pb_v1_vending_machine_proto_goTypes = nil
+	file_pb_v1_vending_machine_proto_depIdxs = nil
 }

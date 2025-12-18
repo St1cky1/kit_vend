@@ -2,16 +2,47 @@ syntax = "proto3";
 
 package api.v1;
 
-option go_package = "github.com/St1cky1/kit_vend/api/v1;api";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/St1cky1/kit_vend/pb/v1;v1";
 
 service VendingMachineService {
-  rpc GetVendingMachineByID(GetVendingMachineByIDRequest) returns (GetVendingMachineByIDResponse);
-  rpc GetSales(GetSalesRequest) returns (GetSalesResponse);
-  rpc GetActions(GetActionsRequest) returns (GetActionsResponse);
-  rpc GetVMStates(GetVMStatesRequest) returns (GetVMStatesResponse);
-  rpc GetEvents(GetEventsRequest) returns (GetEventsResponse);
-  rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
-  rpc GetVendingMachineRemains(GetVendingMachineRemainsRequest) returns (GetVendingMachineRemainsResponse);
+  rpc GetVendingMachineByID(GetVendingMachineByIDRequest) returns (GetVendingMachineByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/vending-machines/{id}"
+    };
+  };
+  rpc GetSales(GetSalesRequest) returns (GetSalesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/sales"
+    };
+  };
+  rpc GetActions(GetActionsRequest) returns (GetActionsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/actions"
+    };
+  };
+  rpc GetVMStates(GetVMStatesRequest) returns (GetVMStatesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/vm-states"
+    };
+  };
+  rpc GetEvents(GetEventsRequest) returns (GetEventsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/events"
+    };
+  };
+  rpc SendCommand(SendCommandRequest) returns (SendCommandResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/commands"
+      body: "*"
+    };
+  };
+  rpc GetVendingMachineRemains(GetVendingMachineRemainsRequest) returns (GetVendingMachineRemainsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/vending-machines/{id}/remains"
+    };
+  };
 }
 
 message VendingMachine {
