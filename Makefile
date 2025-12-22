@@ -31,6 +31,8 @@ run: build
 	@echo "Running server..."
 	./bin/server
 
+proto-gen-doc:
+
 dev:
 	@echo "Running server in development mode..."
 	go run ./cmd/server/main.go

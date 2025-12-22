@@ -1,3 +1,4 @@
+// коды команд
 package constants
 
 type CommandCode uint

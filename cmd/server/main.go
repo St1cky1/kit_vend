@@ -13,13 +13,14 @@ import (
 	grpcserver "github.com/St1cky1/kit_vend/internal/grpc"
 	"github.com/St1cky1/kit_vend/internal/storage"
 	"github.com/St1cky1/kit_vend/internal/usecase"
-	pbv1 "github.com/St1cky1/kit_vend/pb/v1"
+	pbv1 "github.com/St1cky1/kit_vend/pkg/pb1"
 	"github.com/St1cky1/kit_vend/pkg/config"
+	"github.com/St1cky1/kit_vend/pkg/logger"
 )
 
 func main() {
 	cfg := config.Load()
-	log := grpcserver.NewLogger(cfg.LogLevel)
+	log := logger.NewLogger(cfg.LogLevel)
 
 	log.Info("Starting Kit Vending Backend", "http_port", cfg.Server.Port)
 

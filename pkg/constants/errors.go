@@ -1,3 +1,4 @@
+// коды ошибок
 package constants
 
 type ErrorCode uint
