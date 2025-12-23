@@ -1,43 +1,70 @@
 syntax = "proto3";
 
+// Kit Vending Backend API
+// API для управления и мониторинга торговых автоматов
 package api.v1;
 
 import "google/api/annotations.proto";
 
 option go_package = "github.com/St1cky1/kit_vend/pb/v1;v1";
 
+// VendingMachineService предоставляет методы для работы с торговыми автоматами
+// Включает получение информации о состоянии, продажах, действиях и событиях автоматов
 service VendingMachineService {
+  // GetVendingMachineByID получает информацию о конкретном торговом автомате по его идентификатору
+  // Возвращает базовую информацию об автомате: ID, название и ID компании
   rpc GetVendingMachineByID(GetVendingMachineByIDRequest) returns (GetVendingMachineByIDResponse) {
     option (google.api.http) = {
       get: "/api/v1/vending-machines/{id}"
     };
   };
+
+  // GetSales получает список всех продаж для указанного периода
+  // Может быть отфильтрована по ID автомата
+  // Возвращает детальную информацию о каждой продаже: товар, количество, сумма, метод оплаты
   rpc GetSales(GetSalesRequest) returns (GetSalesResponse) {
     option (google.api.http) = {
       get: "/api/v1/sales"
     };
   };
+
+  // GetActions получает список действий (обслуживание, загрузка товара) для указанного периода
+  // Может быть отфильтрована по ID автомата
   rpc GetActions(GetActionsRequest) returns (GetActionsResponse) {
     option (google.api.http) = {
       get: "/api/v1/actions"
     };
   };
+
+  // GetVMStates получает текущее состояние всех торговых автоматов
+  // Включает информацию о подключении, состоянии компонентов и времени последней активности
   rpc GetVMStates(GetVMStatesRequest) returns (GetVMStatesResponse) {
     option (google.api.http) = {
       get: "/api/v1/vm-states"
     };
   };
+
+  // GetEvents получает список событий (ошибки, предупреждения) для указанного периода
+  // Может быть отфильтрована по ID автомата
+  // События включают код ошибки и описание
   rpc GetEvents(GetEventsRequest) returns (GetEventsResponse) {
     option (google.api.http) = {
       get: "/api/v1/events"
     };
   };
+
+  // SendCommand отправляет команду на выполнение конкретному торговому автомату
+  // Команда включает тип команды (перезагрузка, обновление, синхронизация и т.д.)
+  // Возвращает ID команды для отслеживания её выполнения
   rpc SendCommand(SendCommandRequest) returns (SendCommandResponse) {
     option (google.api.http) = {
       post: "/api/v1/commands"
       body: "*"
     };
   };
+
+  // GetVendingMachineRemains получает информацию об остатках товара в автомате
+  // Включает ID товара, название и количество единиц
   rpc GetVendingMachineRemains(GetVendingMachineRemainsRequest) returns (GetVendingMachineRemainsResponse) {
     option (google.api.http) = {
       get: "/api/v1/vending-machines/{id}/remains"
@@ -45,121 +72,198 @@ service VendingMachineService {
   };
 }
 
+// VendingMachine содержит базовую информацию о торговом автомате
 message VendingMachine {
+  // Уникальный идентификатор автомата
   int32 id = 1;
+  // Название/описание автомата
   string name = 2;
+  // ID компании, которой принадлежит автомат
   int32 company_id = 3;
 }
 
+// GetVendingMachineByIDRequest - запрос информации об автомате по ID
 message GetVendingMachineByIDRequest {
+  // ID торгового автомата
   int32 id = 1;
 }
 
+// GetVendingMachineByIDResponse - ответ с информацией об автомате
 message GetVendingMachineByIDResponse {
+  // Информация о торговом автомате
   VendingMachine vending_machine = 1;
 }
 
+// Sale содержит информацию об одной продаже товара из автомата
 message Sale {
+  // Уникальный идентификатор продажи
   int32 id = 1;
+  // ID торгового автомата, из которого была сделана продажа
   int32 vending_machine_id = 2;
+  // ID товара
   int32 goods_id = 3;
+  // Название товара
   string goods_name = 4;
+  // Количество единиц товара
   int32 count = 5;
+  // Сумма продажи
   double sum = 6;
+  // Дата и время продажи (ISO 8601)
   string date_time = 7;
+  // Метод оплаты (1=наличные, 2=карта, 3=мобильный платёж и т.д.)
   int32 payment_method = 8;
 }
 
+// GetSalesRequest - запрос списка продаж за период
 message GetSalesRequest {
+  // Начальная дата периода (ISO 8601)
   string from_date = 1;
+  // Конечная дата периода (ISO 8601)
   string to_date = 2;
+  // ID торгового автомата для фильтрации (опционально)
   int32 vending_machine_id = 3;
 }
 
+// GetSalesResponse - ответ со списком продаж
 message GetSalesResponse {
+  // Список всех продаж за указанный период
   repeated Sale sales = 1;
 }
 
+// Action содержит информацию о действии (обслуживании, загрузке) с автоматом
 message Action {
+  // Уникальный идентификатор действия
   int32 id = 1;
+  // ID торгового автомата
   int32 vending_machine_id = 2;
+  // Тип действия (1=обслуживание, 2=загрузка товара, 3=инкассация и т.д.)
   int32 action_type = 3;
+  // Дата и время действия (ISO 8601)
   string date_time = 4;
 }
 
+// GetActionsRequest - запрос списка действий за период
 message GetActionsRequest {
+  // Начальная дата периода (ISO 8601)
   string from_date = 1;
+  // Конечная дата периода (ISO 8601)
   string to_date = 2;
+  // ID торгового автомата для фильтрации (опционально)
   int32 vending_machine_id = 3;
 }
 
+// GetActionsResponse - ответ со списком действий
 message GetActionsResponse {
+  // Список всех действий за указанный период
   repeated Action actions = 1;
 }
 
+// VMState содержит текущее состояние торгового автомата и его компонентов
 message VMState {
+  // ID торгового автомата
   int32 vending_machine_id = 1;
+  // Название автомата
   string machine_name = 2;
+  // Статус подключения (true=онлайн, false=оффлайн)
   bool is_online = 3;
+  // Время последней активности (ISO 8601)
   string last_activity_time = 4;
+  // Статус источника питания (0=нормально, 1=низкое напряжение, 2=критическое)
   int32 power_supply = 5;
+  // Статус приёмника банкнот (0=рабочий, 1=ошибка, 2=отсутствует)
   int32 bill_acceptor = 6;
+  // Статус приёмника монет (0=рабочий, 1=ошибка, 2=отсутствует)
   int32 coin_acceptor = 7;
+  // Статус системы бесконтактной оплаты (0=рабочая, 1=ошибка, 2=отсутствует)
   int32 non_cash_payment = 8;
+  // Статус кассы (0=рабочая, 1=ошибка, 2=полная)
   int32 cash_register = 9;
+  // Статус QR дисплея (0=рабочий, 1=ошибка, 2=отсутствует)
   int32 qr_display = 10;
 }
 
+// GetVMStatesRequest - запрос состояния всех автоматов
 message GetVMStatesRequest {
 }
 
+// GetVMStatesResponse - ответ с состоянием всех автоматов
 message GetVMStatesResponse {
+  // Список состояний всех торговых автоматов
   repeated VMState vm_states = 1;
 }
 
+// Event содержит информацию о событии (ошибке, предупреждении) в автомате
 message Event {
+  // Уникальный идентификатор события
   int32 id = 1;
+  // ID торгового автомата, где произошло событие
   int32 vending_machine_id = 2;
+  // Код события/ошибки (определяется спецификацией оборудования)
   int32 event_code = 3;
+  // Дата и время события (ISO 8601)
   string date_time = 4;
+  // Описание события на русском языке
   string description = 5;
 }
 
+// GetEventsRequest - запрос списка событий за период
 message GetEventsRequest {
+  // Начальная дата периода (ISO 8601)
   string from_date = 1;
+  // Конечная дата периода (ISO 8601)
   string to_date = 2;
+  // ID торгового автомата для фильтрации (опционально)
   int32 vending_machine_id = 3;
 }
 
+// GetEventsResponse - ответ со списком событий
 message GetEventsResponse {
+  // Список всех событий за указанный период
   repeated Event events = 1;
 }
 
+// Command содержит команду для выполнения на торговом автомате
 message Command {
+  // ID торгового автомата, на который отправляется команда
   int32 vending_machine_id = 1;
+  // Код команды (см. таблицу кодов команд: 1=обновление, 2=отчёт, 3=загрузка матрицы и т.д.)
   int32 command_code = 2;
 }
 
+// SendCommandRequest - запрос на отправку команды автомату
 message SendCommandRequest {
+  // Команда для отправки
   Command command = 1;
 }
 
+// SendCommandResponse - ответ с результатом отправки команды
 message SendCommandResponse {
+  // Код результата (0=успех, >0=ошибка)
   int32 result_code = 1;
+  // ID команды для отслеживания её выполнения
   int32 command_id = 2;
 }
 
+// VendingMachineRemains содержит информацию об остатках товара в автомате
 message VendingMachineRemains {
+  // ID торгового автомата
   int32 vending_machine_id = 1;
+  // ID товара
   int32 goods_id = 2;
+  // Название товара
   string goods_name = 3;
+  // Количество единиц товара в автомате
   int32 count = 4;
 }
 
+// GetVendingMachineRemainsRequest - запрос остатков товара в автомате
 message GetVendingMachineRemainsRequest {
+  // ID торгового автомата
   int32 id = 1;
 }
 
+// GetVendingMachineRemainsResponse - ответ с остатками товара
 message GetVendingMachineRemainsResponse {
+  // Список остатков всех товаров в автомате
   repeated VendingMachineRemains remains = 1;
 }

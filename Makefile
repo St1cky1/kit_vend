@@ -32,6 +32,13 @@ run: build
 	./bin/server
 
 proto-gen-doc:
+	@echo "Generating API documentation from proto files..."
+	mkdir -p docs
+	$(PROTOC) -I. -I$(shell go env GOPATH)/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.16.0/third_party/googleapis \
+		--doc_out=./docs \
+		--doc_opt=markdown,API.md \
+		pb/v1/vending_machine.proto
+	@echo "API documentation generated: docs/API.md"
 
 dev:
 	@echo "Running server in development mode..."
