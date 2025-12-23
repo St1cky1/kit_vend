@@ -1,3 +1,4 @@
+// логируем вызовы
 package grpc
 
 import (
@@ -7,9 +8,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/St1cky1/kit_vend/pkg/logger"
 )
 
-func UnaryServerLoggingInterceptor(log *Logger) grpc.UnaryServerInterceptor {
+func UnaryServerLoggingInterceptor(log logger.ILogger) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		start := time.Now()
 
@@ -38,7 +41,7 @@ func UnaryServerLoggingInterceptor(log *Logger) grpc.UnaryServerInterceptor {
 	}
 }
 
-func StreamServerLoggingInterceptor(log *Logger) grpc.StreamServerInterceptor {
+func StreamServerLoggingInterceptor(log logger.ILogger) grpc.StreamServerInterceptor {
 	return func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 		start := time.Now()
 

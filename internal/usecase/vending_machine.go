@@ -60,6 +60,10 @@ func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId 
 		return nil, err
 	}
 
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
+		return nil, err
+	}
+
 	sales := make([]entity.Sale, len(result.Sales))
 	for i, s := range result.Sales {
 		sales[i] = entity.Sale{
@@ -93,6 +97,10 @@ func (uc *VendingMachineUseCase) GetActions(ctx context.Context, vendingMachineI
 		return nil, err
 	}
 
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
+		return nil, err
+	}
+
 	actions := make([]entity.Action, len(result.Actions))
 	for i, a := range result.Actions {
 		actions[i] = entity.Action{
@@ -111,6 +119,10 @@ func (uc *VendingMachineUseCase) GetVMStates(ctx context.Context) ([]entity.VMSt
 	var result api.GetVMStatesResponse
 	err := uc.kitClient.Call("GetVMStates", nil, &result)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
 		return nil, err
 	}
 
@@ -149,6 +161,10 @@ func (uc *VendingMachineUseCase) GetEvents(ctx context.Context, vendingMachineId
 		return nil, err
 	}
 
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
+		return nil, err
+	}
+
 	events := make([]entity.Event, len(result.Events))
 	for i, e := range result.Events {
 		events[i] = entity.Event{
@@ -176,6 +192,10 @@ func (uc *VendingMachineUseCase) SendCommand(ctx context.Context, vendingMachine
 		return err
 	}
 
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -184,6 +204,10 @@ func (uc *VendingMachineUseCase) GetVendingMachineRemains(ctx context.Context, i
 	var result api.GetVendingMachineRemainsResponse
 	err := uc.kitClient.Call("GetVendingMachineRemains", map[string]interface{}{"Id": id}, &result)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
 		return nil, err
 	}
 

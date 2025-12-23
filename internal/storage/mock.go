@@ -1,3 +1,4 @@
+// демо моки
 package storage
 
 import (
