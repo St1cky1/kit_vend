@@ -13,9 +13,9 @@ import (
 	grpcserver "github.com/St1cky1/kit_vend/internal/grpc"
 	"github.com/St1cky1/kit_vend/internal/storage"
 	"github.com/St1cky1/kit_vend/internal/usecase"
-	pbv1 "github.com/St1cky1/kit_vend/pkg/pb1"
 	"github.com/St1cky1/kit_vend/pkg/config"
 	"github.com/St1cky1/kit_vend/pkg/logger"
+	pbv1 "github.com/St1cky1/kit_vend/pkg/pb1"
 )
 
 func main() {
@@ -24,7 +24,12 @@ func main() {
 
 	log.Info("Starting Kit Vending Backend", "http_port", cfg.Server.Port)
 
-	kitClient := kit_vending.NewClient(cfg.KitVendingAPI.CompanyId, cfg.KitVendingAPI.Login, cfg.KitVendingAPI.Password)
+	// В будущем для продакшена раскомментировать:
+	// kitClient := kit_vending.NewClient(cfg.KitVendingAPI.CompanyId, cfg.KitVendingAPI.Login, cfg.KitVendingAPI.Password)
+	
+	// Используем мок-клиент для тестирования:
+	kitClient := kit_vending.NewMockClient()
+
 	if cfg.LogLevel == "debug" {
 		kitClient.SetDebug(true)
 		log.Info("Debug mode enabled - Kit Vending API responses will be logged")
@@ -36,8 +41,12 @@ func main() {
 	eventRepo := storage.NewMockEventRepository()
 	vmStateRepo := storage.NewMockVMStateRepository()
 	remainsRepo := storage.NewMockVendingMachineRemainsRepository()
+	userRepo := storage.NewMockUserRepository()
+	cellRepo := storage.NewMockCellRepository()
+	sessionRepo := storage.NewMockLoadSessionRepository()
 
 	uc := usecase.NewVendingMachineUseCase(kitClient, vmRepo, saleRepo, actionRepo, eventRepo, vmStateRepo, remainsRepo)
+	courierUc := usecase.NewCourierUseCase(userRepo, cellRepo, sessionRepo, vmStateRepo, kitClient)
 
 	grpcPort := ":50051"
 	httpPort := ":" + cfg.Server.Port
@@ -55,6 +64,9 @@ func main() {
 
 	vmService := grpcserver.NewVendingMachineServiceServer(uc)
 	pbv1.RegisterVendingMachineServiceServer(grpcServer, vmService)
+
+	courierService := grpcserver.NewCourierServiceServer(courierUc)
+	pbv1.RegisterCourierServiceServer(grpcServer, courierService)
 
 	go func() {
 		log.Info("gRPC server listening", "address", "0.0.0.0:50051")
@@ -76,6 +88,10 @@ func main() {
 	gwmux := runtime.NewServeMux()
 	if err := pbv1.RegisterVendingMachineServiceHandler(context.Background(), gwmux, conn); err != nil {
 		log.Error("failed to register gateway", "error", err)
+		return
+	}
+	if err := pbv1.RegisterCourierServiceHandler(context.Background(), gwmux, conn); err != nil {
+		log.Error("failed to register courier gateway", "error", err)
 		return
 	}
 
