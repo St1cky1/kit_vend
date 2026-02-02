@@ -121,7 +121,13 @@ type MockVMStateRepository struct {
 
 func NewMockVMStateRepository() *MockVMStateRepository {
 	return &MockVMStateRepository{
-		states: []entity.VMState{},
+		states: []entity.VMState{
+			{
+				VendingMachineId: 1,
+				MachineName:      "Machine 1",
+				IsOnline:         true,
+			},
+		},
 	}
 }
 
@@ -150,4 +156,107 @@ func NewMockVendingMachineRemainsRepository() *MockVendingMachineRemainsReposito
 
 func (r *MockVendingMachineRemainsRepository) GetByVendingMachineID(ctx context.Context, id int) ([]entity.VendingMachineRemains, error) {
 	return r.remains, nil
+}
+
+type MockUserRepository struct {
+	users []entity.User
+}
+
+func NewMockUserRepository() *MockUserRepository {
+	return &MockUserRepository{
+		users: []entity.User{
+			{Id: 1, Username: "courier1", Role: entity.RoleCourier},
+			{Id: 2, Username: "admin1", Role: entity.RoleAdmin},
+		},
+	}
+}
+
+func (r *MockUserRepository) GetByID(ctx context.Context, id int) (*entity.User, error) {
+	for _, u := range r.users {
+		if u.Id == id {
+			return &u, nil
+		}
+	}
+	return nil, nil
+}
+
+type MockCellRepository struct {
+	cells []entity.Cell
+}
+
+func NewMockCellRepository() *MockCellRepository {
+	return &MockCellRepository{
+		cells: []entity.Cell{
+			{Id: "A1", VendingMachineId: 1, Status: entity.CellStatusFree},
+			{Id: "A2", VendingMachineId: 1, Status: entity.CellStatusFree},
+			{Id: "B1", VendingMachineId: 1, Status: entity.CellStatusFree},
+		},
+	}
+}
+
+func (r *MockCellRepository) GetByVendingMachineID(ctx context.Context, vmID int) ([]entity.Cell, error) {
+	var res []entity.Cell
+	for _, c := range r.cells {
+		if c.VendingMachineId == vmID {
+			res = append(res, c)
+		}
+	}
+	return res, nil
+}
+
+func (r *MockCellRepository) Update(ctx context.Context, cell *entity.Cell) error {
+	for i, c := range r.cells {
+		if c.Id == cell.Id && c.VendingMachineId == cell.VendingMachineId {
+			r.cells[i] = *cell
+			return nil
+		}
+	}
+	r.cells = append(r.cells, *cell)
+	return nil
+}
+
+type MockLoadSessionRepository struct {
+	sessions []entity.LoadSession
+	lastID   int
+}
+
+func NewMockLoadSessionRepository() *MockLoadSessionRepository {
+	return &MockLoadSessionRepository{
+		sessions: []entity.LoadSession{},
+	}
+}
+
+func (r *MockLoadSessionRepository) Create(ctx context.Context, session *entity.LoadSession) error {
+	r.lastID++
+	session.Id = r.lastID
+	r.sessions = append(r.sessions, *session)
+	return nil
+}
+
+func (r *MockLoadSessionRepository) GetByID(ctx context.Context, id int) (*entity.LoadSession, error) {
+	for _, s := range r.sessions {
+		if s.Id == id {
+			return &s, nil
+		}
+	}
+	return nil, nil
+}
+
+func (r *MockLoadSessionRepository) GetActiveByVendingMachineID(ctx context.Context, vmID int) (*entity.LoadSession, error) {
+	for _, s := range r.sessions {
+		if s.VendingMachineId == vmID && s.Status == entity.LoadSessionStatusActive {
+			return &s, nil
+		}
+	}
+	return nil, nil
+}
+
+func (r *MockLoadSessionRepository) Update(ctx context.Context, session *entity.LoadSession) error {
+	for i, s := range r.sessions {
+		if s.Id == session.Id {
+			r.sessions[i] = *session
+			return nil
+		}
+	}
+	return nil
 }

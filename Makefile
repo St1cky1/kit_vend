@@ -16,10 +16,10 @@ proto: gen-proto
 gen-proto:
 	@echo "Generating gRPC code from proto files..."
 	$(PROTOC) -I. -I$(shell go env GOPATH)/pkg/mod/github.com/grpc-ecosystem/grpc-gateway@v1.16.0/third_party/googleapis \
-		--go_out=paths=source_relative:. \
-		--go-grpc_out=paths=source_relative:. \
-		--grpc-gateway_out=paths=source_relative:. \
-		pb/v1/vending_machine.proto
+		--go_out=. --go_opt=module=github.com/St1cky1/kit_vend \
+		--go-grpc_out=. --go-grpc_opt=module=github.com/St1cky1/kit_vend \
+		--grpc-gateway_out=. --grpc-gateway_opt=module=github.com/St1cky1/kit_vend \
+		pb/v1/vending_machine.proto pb/v1/courier.proto
 	@echo "Proto code generated successfully!"
 
 build:

@@ -4,6 +4,9 @@
 // - protoc             v6.33.1
 // source: pb/v1/vending_machine.proto
 
+// Kit Vending Backend API
+// API для управления и мониторинга торговых автоматов
+
 package pb1
 
 import (
@@ -31,13 +34,33 @@ const (
 // VendingMachineServiceClient is the client API for VendingMachineService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// VendingMachineService предоставляет методы для работы с торговыми автоматами
+// Включает получение информации о состоянии, продажах, действиях и событиях автоматов
 type VendingMachineServiceClient interface {
+	// GetVendingMachineByID получает информацию о конкретном торговом автомате по его идентификатору
+	// Возвращает базовую информацию об автомате: ID, название и ID компании
 	GetVendingMachineByID(ctx context.Context, in *GetVendingMachineByIDRequest, opts ...grpc.CallOption) (*GetVendingMachineByIDResponse, error)
+	// GetSales получает список всех продаж для указанного периода
+	// Может быть отфильтрована по ID автомата
+	// Возвращает детальную информацию о каждой продаже: товар, количество, сумма, метод оплаты
 	GetSales(ctx context.Context, in *GetSalesRequest, opts ...grpc.CallOption) (*GetSalesResponse, error)
+	// GetActions получает список действий (обслуживание, загрузка товара) для указанного периода
+	// Может быть отфильтрована по ID автомата
 	GetActions(ctx context.Context, in *GetActionsRequest, opts ...grpc.CallOption) (*GetActionsResponse, error)
+	// GetVMStates получает текущее состояние всех торговых автоматов
+	// Включает информацию о подключении, состоянии компонентов и времени последней активности
 	GetVMStates(ctx context.Context, in *GetVMStatesRequest, opts ...grpc.CallOption) (*GetVMStatesResponse, error)
+	// GetEvents получает список событий (ошибки, предупреждения) для указанного периода
+	// Может быть отфильтрована по ID автомата
+	// События включают код ошибки и описание
 	GetEvents(ctx context.Context, in *GetEventsRequest, opts ...grpc.CallOption) (*GetEventsResponse, error)
+	// SendCommand отправляет команду на выполнение конкретному торговому автомату
+	// Команда включает тип команды (перезагрузка, обновление, синхронизация и т.д.)
+	// Возвращает ID команды для отслеживания её выполнения
 	SendCommand(ctx context.Context, in *SendCommandRequest, opts ...grpc.CallOption) (*SendCommandResponse, error)
+	// GetVendingMachineRemains получает информацию об остатках товара в автомате
+	// Включает ID товара, название и количество единиц
 	GetVendingMachineRemains(ctx context.Context, in *GetVendingMachineRemainsRequest, opts ...grpc.CallOption) (*GetVendingMachineRemainsResponse, error)
 }
 
@@ -122,13 +145,33 @@ func (c *vendingMachineServiceClient) GetVendingMachineRemains(ctx context.Conte
 // VendingMachineServiceServer is the server API for VendingMachineService service.
 // All implementations must embed UnimplementedVendingMachineServiceServer
 // for forward compatibility.
+//
+// VendingMachineService предоставляет методы для работы с торговыми автоматами
+// Включает получение информации о состоянии, продажах, действиях и событиях автоматов
 type VendingMachineServiceServer interface {
+	// GetVendingMachineByID получает информацию о конкретном торговом автомате по его идентификатору
+	// Возвращает базовую информацию об автомате: ID, название и ID компании
 	GetVendingMachineByID(context.Context, *GetVendingMachineByIDRequest) (*GetVendingMachineByIDResponse, error)
+	// GetSales получает список всех продаж для указанного периода
+	// Может быть отфильтрована по ID автомата
+	// Возвращает детальную информацию о каждой продаже: товар, количество, сумма, метод оплаты
 	GetSales(context.Context, *GetSalesRequest) (*GetSalesResponse, error)
+	// GetActions получает список действий (обслуживание, загрузка товара) для указанного периода
+	// Может быть отфильтрована по ID автомата
 	GetActions(context.Context, *GetActionsRequest) (*GetActionsResponse, error)
+	// GetVMStates получает текущее состояние всех торговых автоматов
+	// Включает информацию о подключении, состоянии компонентов и времени последней активности
 	GetVMStates(context.Context, *GetVMStatesRequest) (*GetVMStatesResponse, error)
+	// GetEvents получает список событий (ошибки, предупреждения) для указанного периода
+	// Может быть отфильтрована по ID автомата
+	// События включают код ошибки и описание
 	GetEvents(context.Context, *GetEventsRequest) (*GetEventsResponse, error)
+	// SendCommand отправляет команду на выполнение конкретному торговому автомату
+	// Команда включает тип команды (перезагрузка, обновление, синхронизация и т.д.)
+	// Возвращает ID команды для отслеживания её выполнения
 	SendCommand(context.Context, *SendCommandRequest) (*SendCommandResponse, error)
+	// GetVendingMachineRemains получает информацию об остатках товара в автомате
+	// Включает ID товара, название и количество единиц
 	GetVendingMachineRemains(context.Context, *GetVendingMachineRemainsRequest) (*GetVendingMachineRemainsResponse, error)
 	mustEmbedUnimplementedVendingMachineServiceServer()
 }

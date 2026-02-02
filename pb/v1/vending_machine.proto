@@ -6,7 +6,7 @@ package api.v1;
 
 import "google/api/annotations.proto";
 
-option go_package = "github.com/St1cky1/kit_vend/pb/v1;v1";
+option go_package = "github.com/St1cky1/kit_vend/pkg/pb1;pb1";
 
 // VendingMachineService предоставляет методы для работы с торговыми автоматами
 // Включает получение информации о состоянии, продажах, действиях и событиях автоматов

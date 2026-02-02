@@ -11,6 +11,7 @@
 - Получение состояния оборудования автоматов
 - Отправка команд на торговые автоматы
 - Проверка остатков товаров
+- **Загрузка товаров курьером (MVP)**: управление ячейками и сессиями загрузки
 
 ## Структура проекта
 
@@ -22,16 +23,21 @@ kit_vend/
 ├── internal/
 │   ├── api/
 │   │   └── kit_vending/          # Клиент для интеграции с внешним API Kit Vending
-│   ├── entity/                   # Доменные модели (Entity)
-│   ├── grpc/                     # Реализация gRPC сервиса
-│   │   └── vending_machine_service.go
+│   ├── entity/                   # Доменные модели (Entity), включая Cell и LoadSession
+│   ├── grpc/                     # Реализация gRPC сервисов
+│   │   ├── vending_machine_service.go
+│   │   └── courier_service.go     # Сервис для курьеров
 │   ├── storage/                  # Слой репозиториев (на данный момент используются mock-реализации)
 │   └── usecase/                  # Бизнес-логика (Use Case слой)
+│       ├── vending_machine.go
+│       └── courier.go            # Логика загрузки товаров
 ├── pb/
 │   └── v1/                       # Protocol Buffer определения
-│       └── vending_machine.proto # Proto-схема API
+│       ├── vending_machine.proto # Proto-схема основного API
+│       └── courier.proto         # Proto-схема API курьера
 ├── pkg/
-│   └── config/                   # Управление конфигурацией
+│   ├── config/                   # Управление конфигурацией
+│   └── pb1/                      # Сгенерированный Go-код из proto
 ├── bin/                          # Скомпилированные бинарные файлы
 ├── Makefile                      # Команды сборки и разработки
 ├── docker-compose.yaml           # Конфигурация Docker для PostgreSQL
@@ -72,8 +78,21 @@ kit_vend/
 - **POST** `/commands` — отправить команду на торговый автомат
   - Body: `{"command": {"vending_machine_id": int, "command_code": int}}`
 
+### Курьерские функции (Загрузка товара)
+- **GET** `/courier/vending-machines/{vending_machine_id}/cells` — получить список ячеек автомата
+- **POST** `/courier/load-sessions` — начать сессию загрузки
+  - Body: `{"vending_machine_id": int, "courier_id": int}`
+- **POST** `/courier/load-sessions/{session_id}/cells` — загрузить товар в ячейку
+  - Body: `{"cell_id": "string", "goods_id": int}`
+- **POST** `/courier/load-sessions/{session_id}/complete` — завершить сессию загрузки (отправляет команду 26 в Kit Vending)
+
 ### Здоровье
 - **GET** `/health` — проверка здоровья сервера
+
+## Роли пользователей
+В системе реализованы базовые роли:
+- `admin`: Доступ к мониторингу, продажам и управлению.
+- `courier`: Доступ только к операциям загрузки товаров.
 
 ## Конфигурация
 
@@ -162,14 +181,14 @@ make run
 3. **Use Case Layer** (`internal/usecase/`)
    - Бизнес-логика
    - Оркестрация работы репозиториев
-   - Интеграция с внешним API
+   - Интеграция с внешним API (Kit Vending)
 
 4. **Storage Layer** (`internal/storage/`)
    - Репозитории для доступа к данным
    - На данный момент используются mock-реализации
 
 5. **Entity Layer** (`internal/entity/`)
-   - Доменные модели данных
+   - Доменные модели данных (VendingMachine, Sale, Cell, LoadSession и др.)
 
 6. **External API Integration** (`internal/api/`)
    - Клиент для интеграции с Kit Vending API
@@ -181,32 +200,30 @@ make run
 
 ## Текущий статус
 
-- ✅ gRPC сервис реализован
+- ✅ gRPC сервисы реализованы (VendingMachine, Courier)
 - ✅ REST API через gRPC Gateway функционален
 - ✅ Интеграция с внешним Kit Vending API
+- ✅ MVP загрузки товара курьером
 - ⏳ Storage слой использует mock-реализации (требуется реальная БД интеграция)
 - ⏳ Юнит-тесты в разработке
 
 ## Примеры использования
 
-### Получить информацию об автомате
+### Получить список ячеек (Курьер)
 ```bash
-curl http://localhost:8080/api/v1/vending-machines/1
+curl http://localhost:8080/api/v1/courier/vending-machines/1/cells
 ```
 
-### Получить продажи
+### Начать сессию загрузки (Курьер)
 ```bash
-curl "http://localhost:8080/api/v1/sales?vending_machine_id=1&from_date=2024-01-01&to_date=2024-12-31"
-```
-
-### Получить состояние автоматов
-```bash
-curl http://localhost:8080/api/v1/vm-states
-```
-
-### Отправить команду
-```bash
-curl -X POST http://localhost:8080/api/v1/commands \
+curl -X POST http://localhost:8080/api/v1/courier/load-sessions \
   -H "Content-Type: application/json" \
-  -d '{"command": {"vending_machine_id": 1, "command_code": 5}}'
+  -d '{"vending_machine_id": 1, "courier_id": 1}'
+```
+
+### Завершить загрузку
+```bash
+curl -X POST http://localhost:8080/api/v1/courier/load-sessions/1/complete \
+  -H "Content-Type: application/json" \
+  -d '{}'
 ```

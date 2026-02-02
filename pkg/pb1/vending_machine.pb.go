@@ -4,6 +4,9 @@
 // 	protoc        v6.33.1
 // source: pb/v1/vending_machine.proto
 
+// Kit Vending Backend API
+// API для управления и мониторинга торговых автоматов
+
 package pb1
 
 import (
@@ -22,11 +25,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// VendingMachine содержит базовую информацию о торговом автомате
 type VendingMachine struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	CompanyId     int32                  `protobuf:"varint,3,opt,name=company_id,json=companyId,proto3" json:"company_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Уникальный идентификатор автомата
+	Id int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Название/описание автомата
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	// ID компании, которой принадлежит автомат
+	CompanyId     int32 `protobuf:"varint,3,opt,name=company_id,json=companyId,proto3" json:"company_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -82,9 +89,11 @@ func (x *VendingMachine) GetCompanyId() int32 {
 	return 0
 }
 
+// GetVendingMachineByIDRequest - запрос информации об автомате по ID
 type GetVendingMachineByIDRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID торгового автомата
+	Id            int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -126,9 +135,11 @@ func (x *GetVendingMachineByIDRequest) GetId() int32 {
 	return 0
 }
 
+// GetVendingMachineByIDResponse - ответ с информацией об автомате
 type GetVendingMachineByIDResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	VendingMachine *VendingMachine        `protobuf:"bytes,1,opt,name=vending_machine,json=vendingMachine,proto3" json:"vending_machine,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Информация о торговом автомате
+	VendingMachine *VendingMachine `protobuf:"bytes,1,opt,name=vending_machine,json=vendingMachine,proto3" json:"vending_machine,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -170,18 +181,27 @@ func (x *GetVendingMachineByIDResponse) GetVendingMachine() *VendingMachine {
 	return nil
 }
 
+// Sale содержит информацию об одной продаже товара из автомата
 type Sale struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	VendingMachineId int32                  `protobuf:"varint,2,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
-	GoodsId          int32                  `protobuf:"varint,3,opt,name=goods_id,json=goodsId,proto3" json:"goods_id,omitempty"`
-	GoodsName        string                 `protobuf:"bytes,4,opt,name=goods_name,json=goodsName,proto3" json:"goods_name,omitempty"`
-	Count            int32                  `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
-	Sum              float64                `protobuf:"fixed64,6,opt,name=sum,proto3" json:"sum,omitempty"`
-	DateTime         string                 `protobuf:"bytes,7,opt,name=date_time,json=dateTime,proto3" json:"date_time,omitempty"`
-	PaymentMethod    int32                  `protobuf:"varint,8,opt,name=payment_method,json=paymentMethod,proto3" json:"payment_method,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Уникальный идентификатор продажи
+	Id int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// ID торгового автомата, из которого была сделана продажа
+	VendingMachineId int32 `protobuf:"varint,2,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	// ID товара
+	GoodsId int32 `protobuf:"varint,3,opt,name=goods_id,json=goodsId,proto3" json:"goods_id,omitempty"`
+	// Название товара
+	GoodsName string `protobuf:"bytes,4,opt,name=goods_name,json=goodsName,proto3" json:"goods_name,omitempty"`
+	// Количество единиц товара
+	Count int32 `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
+	// Сумма продажи
+	Sum float64 `protobuf:"fixed64,6,opt,name=sum,proto3" json:"sum,omitempty"`
+	// Дата и время продажи (ISO 8601)
+	DateTime string `protobuf:"bytes,7,opt,name=date_time,json=dateTime,proto3" json:"date_time,omitempty"`
+	// Метод оплаты (1=наличные, 2=карта, 3=мобильный платёж и т.д.)
+	PaymentMethod int32 `protobuf:"varint,8,opt,name=payment_method,json=paymentMethod,proto3" json:"payment_method,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Sale) Reset() {
@@ -270,11 +290,15 @@ func (x *Sale) GetPaymentMethod() int32 {
 	return 0
 }
 
+// GetSalesRequest - запрос списка продаж за период
 type GetSalesRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	FromDate         string                 `protobuf:"bytes,1,opt,name=from_date,json=fromDate,proto3" json:"from_date,omitempty"`
-	ToDate           string                 `protobuf:"bytes,2,opt,name=to_date,json=toDate,proto3" json:"to_date,omitempty"`
-	VendingMachineId int32                  `protobuf:"varint,3,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Начальная дата периода (ISO 8601)
+	FromDate string `protobuf:"bytes,1,opt,name=from_date,json=fromDate,proto3" json:"from_date,omitempty"`
+	// Конечная дата периода (ISO 8601)
+	ToDate string `protobuf:"bytes,2,opt,name=to_date,json=toDate,proto3" json:"to_date,omitempty"`
+	// ID торгового автомата для фильтрации (опционально)
+	VendingMachineId int32 `protobuf:"varint,3,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -330,9 +354,11 @@ func (x *GetSalesRequest) GetVendingMachineId() int32 {
 	return 0
 }
 
+// GetSalesResponse - ответ со списком продаж
 type GetSalesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Sales         []*Sale                `protobuf:"bytes,1,rep,name=sales,proto3" json:"sales,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Список всех продаж за указанный период
+	Sales         []*Sale `protobuf:"bytes,1,rep,name=sales,proto3" json:"sales,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -374,14 +400,19 @@ func (x *GetSalesResponse) GetSales() []*Sale {
 	return nil
 }
 
+// Action содержит информацию о действии (обслуживании, загрузке) с автоматом
 type Action struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	VendingMachineId int32                  `protobuf:"varint,2,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
-	ActionType       int32                  `protobuf:"varint,3,opt,name=action_type,json=actionType,proto3" json:"action_type,omitempty"`
-	DateTime         string                 `protobuf:"bytes,4,opt,name=date_time,json=dateTime,proto3" json:"date_time,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Уникальный идентификатор действия
+	Id int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// ID торгового автомата
+	VendingMachineId int32 `protobuf:"varint,2,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	// Тип действия (1=обслуживание, 2=загрузка товара, 3=инкассация и т.д.)
+	ActionType int32 `protobuf:"varint,3,opt,name=action_type,json=actionType,proto3" json:"action_type,omitempty"`
+	// Дата и время действия (ISO 8601)
+	DateTime      string `protobuf:"bytes,4,opt,name=date_time,json=dateTime,proto3" json:"date_time,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Action) Reset() {
@@ -442,11 +473,15 @@ func (x *Action) GetDateTime() string {
 	return ""
 }
 
+// GetActionsRequest - запрос списка действий за период
 type GetActionsRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	FromDate         string                 `protobuf:"bytes,1,opt,name=from_date,json=fromDate,proto3" json:"from_date,omitempty"`
-	ToDate           string                 `protobuf:"bytes,2,opt,name=to_date,json=toDate,proto3" json:"to_date,omitempty"`
-	VendingMachineId int32                  `protobuf:"varint,3,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Начальная дата периода (ISO 8601)
+	FromDate string `protobuf:"bytes,1,opt,name=from_date,json=fromDate,proto3" json:"from_date,omitempty"`
+	// Конечная дата периода (ISO 8601)
+	ToDate string `protobuf:"bytes,2,opt,name=to_date,json=toDate,proto3" json:"to_date,omitempty"`
+	// ID торгового автомата для фильтрации (опционально)
+	VendingMachineId int32 `protobuf:"varint,3,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -502,9 +537,11 @@ func (x *GetActionsRequest) GetVendingMachineId() int32 {
 	return 0
 }
 
+// GetActionsResponse - ответ со списком действий
 type GetActionsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Actions       []*Action              `protobuf:"bytes,1,rep,name=actions,proto3" json:"actions,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Список всех действий за указанный период
+	Actions       []*Action `protobuf:"bytes,1,rep,name=actions,proto3" json:"actions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -546,20 +583,31 @@ func (x *GetActionsResponse) GetActions() []*Action {
 	return nil
 }
 
+// VMState содержит текущее состояние торгового автомата и его компонентов
 type VMState struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	VendingMachineId int32                  `protobuf:"varint,1,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
-	MachineName      string                 `protobuf:"bytes,2,opt,name=machine_name,json=machineName,proto3" json:"machine_name,omitempty"`
-	IsOnline         bool                   `protobuf:"varint,3,opt,name=is_online,json=isOnline,proto3" json:"is_online,omitempty"`
-	LastActivityTime string                 `protobuf:"bytes,4,opt,name=last_activity_time,json=lastActivityTime,proto3" json:"last_activity_time,omitempty"`
-	PowerSupply      int32                  `protobuf:"varint,5,opt,name=power_supply,json=powerSupply,proto3" json:"power_supply,omitempty"`
-	BillAcceptor     int32                  `protobuf:"varint,6,opt,name=bill_acceptor,json=billAcceptor,proto3" json:"bill_acceptor,omitempty"`
-	CoinAcceptor     int32                  `protobuf:"varint,7,opt,name=coin_acceptor,json=coinAcceptor,proto3" json:"coin_acceptor,omitempty"`
-	NonCashPayment   int32                  `protobuf:"varint,8,opt,name=non_cash_payment,json=nonCashPayment,proto3" json:"non_cash_payment,omitempty"`
-	CashRegister     int32                  `protobuf:"varint,9,opt,name=cash_register,json=cashRegister,proto3" json:"cash_register,omitempty"`
-	QrDisplay        int32                  `protobuf:"varint,10,opt,name=qr_display,json=qrDisplay,proto3" json:"qr_display,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID торгового автомата
+	VendingMachineId int32 `protobuf:"varint,1,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	// Название автомата
+	MachineName string `protobuf:"bytes,2,opt,name=machine_name,json=machineName,proto3" json:"machine_name,omitempty"`
+	// Статус подключения (true=онлайн, false=оффлайн)
+	IsOnline bool `protobuf:"varint,3,opt,name=is_online,json=isOnline,proto3" json:"is_online,omitempty"`
+	// Время последней активности (ISO 8601)
+	LastActivityTime string `protobuf:"bytes,4,opt,name=last_activity_time,json=lastActivityTime,proto3" json:"last_activity_time,omitempty"`
+	// Статус источника питания (0=нормально, 1=низкое напряжение, 2=критическое)
+	PowerSupply int32 `protobuf:"varint,5,opt,name=power_supply,json=powerSupply,proto3" json:"power_supply,omitempty"`
+	// Статус приёмника банкнот (0=рабочий, 1=ошибка, 2=отсутствует)
+	BillAcceptor int32 `protobuf:"varint,6,opt,name=bill_acceptor,json=billAcceptor,proto3" json:"bill_acceptor,omitempty"`
+	// Статус приёмника монет (0=рабочий, 1=ошибка, 2=отсутствует)
+	CoinAcceptor int32 `protobuf:"varint,7,opt,name=coin_acceptor,json=coinAcceptor,proto3" json:"coin_acceptor,omitempty"`
+	// Статус системы бесконтактной оплаты (0=рабочая, 1=ошибка, 2=отсутствует)
+	NonCashPayment int32 `protobuf:"varint,8,opt,name=non_cash_payment,json=nonCashPayment,proto3" json:"non_cash_payment,omitempty"`
+	// Статус кассы (0=рабочая, 1=ошибка, 2=полная)
+	CashRegister int32 `protobuf:"varint,9,opt,name=cash_register,json=cashRegister,proto3" json:"cash_register,omitempty"`
+	// Статус QR дисплея (0=рабочий, 1=ошибка, 2=отсутствует)
+	QrDisplay     int32 `protobuf:"varint,10,opt,name=qr_display,json=qrDisplay,proto3" json:"qr_display,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *VMState) Reset() {
@@ -662,6 +710,7 @@ func (x *VMState) GetQrDisplay() int32 {
 	return 0
 }
 
+// GetVMStatesRequest - запрос состояния всех автоматов
 type GetVMStatesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -698,9 +747,11 @@ func (*GetVMStatesRequest) Descriptor() ([]byte, []int) {
 	return file_pb_v1_vending_machine_proto_rawDescGZIP(), []int{10}
 }
 
+// GetVMStatesResponse - ответ с состоянием всех автоматов
 type GetVMStatesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	VmStates      []*VMState             `protobuf:"bytes,1,rep,name=vm_states,json=vmStates,proto3" json:"vm_states,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Список состояний всех торговых автоматов
+	VmStates      []*VMState `protobuf:"bytes,1,rep,name=vm_states,json=vmStates,proto3" json:"vm_states,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -742,15 +793,21 @@ func (x *GetVMStatesResponse) GetVmStates() []*VMState {
 	return nil
 }
 
+// Event содержит информацию о событии (ошибке, предупреждении) в автомате
 type Event struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	Id               int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	VendingMachineId int32                  `protobuf:"varint,2,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
-	EventCode        int32                  `protobuf:"varint,3,opt,name=event_code,json=eventCode,proto3" json:"event_code,omitempty"`
-	DateTime         string                 `protobuf:"bytes,4,opt,name=date_time,json=dateTime,proto3" json:"date_time,omitempty"`
-	Description      string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Уникальный идентификатор события
+	Id int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	// ID торгового автомата, где произошло событие
+	VendingMachineId int32 `protobuf:"varint,2,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	// Код события/ошибки (определяется спецификацией оборудования)
+	EventCode int32 `protobuf:"varint,3,opt,name=event_code,json=eventCode,proto3" json:"event_code,omitempty"`
+	// Дата и время события (ISO 8601)
+	DateTime string `protobuf:"bytes,4,opt,name=date_time,json=dateTime,proto3" json:"date_time,omitempty"`
+	// Описание события на русском языке
+	Description   string `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Event) Reset() {
@@ -818,11 +875,15 @@ func (x *Event) GetDescription() string {
 	return ""
 }
 
+// GetEventsRequest - запрос списка событий за период
 type GetEventsRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	FromDate         string                 `protobuf:"bytes,1,opt,name=from_date,json=fromDate,proto3" json:"from_date,omitempty"`
-	ToDate           string                 `protobuf:"bytes,2,opt,name=to_date,json=toDate,proto3" json:"to_date,omitempty"`
-	VendingMachineId int32                  `protobuf:"varint,3,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Начальная дата периода (ISO 8601)
+	FromDate string `protobuf:"bytes,1,opt,name=from_date,json=fromDate,proto3" json:"from_date,omitempty"`
+	// Конечная дата периода (ISO 8601)
+	ToDate string `protobuf:"bytes,2,opt,name=to_date,json=toDate,proto3" json:"to_date,omitempty"`
+	// ID торгового автомата для фильтрации (опционально)
+	VendingMachineId int32 `protobuf:"varint,3,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -878,9 +939,11 @@ func (x *GetEventsRequest) GetVendingMachineId() int32 {
 	return 0
 }
 
+// GetEventsResponse - ответ со списком событий
 type GetEventsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Events        []*Event               `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Список всех событий за указанный период
+	Events        []*Event `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -922,12 +985,15 @@ func (x *GetEventsResponse) GetEvents() []*Event {
 	return nil
 }
 
+// Command содержит команду для выполнения на торговом автомате
 type Command struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	VendingMachineId int32                  `protobuf:"varint,1,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
-	CommandCode      int32                  `protobuf:"varint,2,opt,name=command_code,json=commandCode,proto3" json:"command_code,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID торгового автомата, на который отправляется команда
+	VendingMachineId int32 `protobuf:"varint,1,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	// Код команды (см. таблицу кодов команд: 1=обновление, 2=отчёт, 3=загрузка матрицы и т.д.)
+	CommandCode   int32 `protobuf:"varint,2,opt,name=command_code,json=commandCode,proto3" json:"command_code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Command) Reset() {
@@ -974,9 +1040,11 @@ func (x *Command) GetCommandCode() int32 {
 	return 0
 }
 
+// SendCommandRequest - запрос на отправку команды автомату
 type SendCommandRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Command       *Command               `protobuf:"bytes,1,opt,name=command,proto3" json:"command,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Команда для отправки
+	Command       *Command `protobuf:"bytes,1,opt,name=command,proto3" json:"command,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1018,10 +1086,13 @@ func (x *SendCommandRequest) GetCommand() *Command {
 	return nil
 }
 
+// SendCommandResponse - ответ с результатом отправки команды
 type SendCommandResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ResultCode    int32                  `protobuf:"varint,1,opt,name=result_code,json=resultCode,proto3" json:"result_code,omitempty"`
-	CommandId     int32                  `protobuf:"varint,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Код результата (0=успех, >0=ошибка)
+	ResultCode int32 `protobuf:"varint,1,opt,name=result_code,json=resultCode,proto3" json:"result_code,omitempty"`
+	// ID команды для отслеживания её выполнения
+	CommandId     int32 `protobuf:"varint,2,opt,name=command_id,json=commandId,proto3" json:"command_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1070,14 +1141,19 @@ func (x *SendCommandResponse) GetCommandId() int32 {
 	return 0
 }
 
+// VendingMachineRemains содержит информацию об остатках товара в автомате
 type VendingMachineRemains struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	VendingMachineId int32                  `protobuf:"varint,1,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
-	GoodsId          int32                  `protobuf:"varint,2,opt,name=goods_id,json=goodsId,proto3" json:"goods_id,omitempty"`
-	GoodsName        string                 `protobuf:"bytes,3,opt,name=goods_name,json=goodsName,proto3" json:"goods_name,omitempty"`
-	Count            int32                  `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID торгового автомата
+	VendingMachineId int32 `protobuf:"varint,1,opt,name=vending_machine_id,json=vendingMachineId,proto3" json:"vending_machine_id,omitempty"`
+	// ID товара
+	GoodsId int32 `protobuf:"varint,2,opt,name=goods_id,json=goodsId,proto3" json:"goods_id,omitempty"`
+	// Название товара
+	GoodsName string `protobuf:"bytes,3,opt,name=goods_name,json=goodsName,proto3" json:"goods_name,omitempty"`
+	// Количество единиц товара в автомате
+	Count         int32 `protobuf:"varint,4,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *VendingMachineRemains) Reset() {
@@ -1138,9 +1214,11 @@ func (x *VendingMachineRemains) GetCount() int32 {
 	return 0
 }
 
+// GetVendingMachineRemainsRequest - запрос остатков товара в автомате
 type GetVendingMachineRemainsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID торгового автомата
+	Id            int32 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1182,8 +1260,10 @@ func (x *GetVendingMachineRemainsRequest) GetId() int32 {
 	return 0
 }
 
+// GetVendingMachineRemainsResponse - ответ с остатками товара
 type GetVendingMachineRemainsResponse struct {
-	state         protoimpl.MessageState   `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Список остатков всех товаров в автомате
 	Remains       []*VendingMachineRemains `protobuf:"bytes,1,rep,name=remains,proto3" json:"remains,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -1325,7 +1405,7 @@ const file_pb_v1_vending_machine_proto_rawDesc = "" +
 	"\vGetVMStates\x12\x1a.api.v1.GetVMStatesRequest\x1a\x1b.api.v1.GetVMStatesResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/v1/vm-states\x12X\n" +
 	"\tGetEvents\x12\x18.api.v1.GetEventsRequest\x1a\x19.api.v1.GetEventsResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/api/v1/events\x12c\n" +
 	"\vSendCommand\x12\x1a.api.v1.SendCommandRequest\x1a\x1b.api.v1.SendCommandResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/commands\x12\x9c\x01\n" +
-	"\x18GetVendingMachineRemains\x12'.api.v1.GetVendingMachineRemainsRequest\x1a(.api.v1.GetVendingMachineRemainsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/api/v1/vending-machines/{id}/remainsB&Z$github.com/St1cky1/kit_vend/pb/v1;v1b\x06proto3"
+	"\x18GetVendingMachineRemains\x12'.api.v1.GetVendingMachineRemainsRequest\x1a(.api.v1.GetVendingMachineRemainsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/api/v1/vending-machines/{id}/remainsB)Z'github.com/St1cky1/kit_vend/pkg/pb1;pb1b\x06proto3"
 
 var (
 	file_pb_v1_vending_machine_proto_rawDescOnce sync.Once

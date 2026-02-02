@@ -37,3 +37,19 @@ type VMStateRepository interface {
 type VendingMachineRemainsRepository interface {
 	GetByVendingMachineID(ctx context.Context, id int) ([]entity.VendingMachineRemains, error)
 }
+
+type UserRepository interface {
+	GetByID(ctx context.Context, id int) (*entity.User, error)
+}
+
+type CellRepository interface {
+	GetByVendingMachineID(ctx context.Context, vmID int) ([]entity.Cell, error)
+	Update(ctx context.Context, cell *entity.Cell) error
+}
+
+type LoadSessionRepository interface {
+	Create(ctx context.Context, session *entity.LoadSession) error
+	GetByID(ctx context.Context, id int) (*entity.LoadSession, error)
+	GetActiveByVendingMachineID(ctx context.Context, vmID int) (*entity.LoadSession, error)
+	Update(ctx context.Context, session *entity.LoadSession) error
+}

@@ -2,7 +2,7 @@
 // source: pb/v1/vending_machine.proto
 
 /*
-Package v1 is a reverse proxy.
+Package pb1 is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */

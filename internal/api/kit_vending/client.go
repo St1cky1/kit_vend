@@ -15,6 +15,11 @@ import (
 
 const baseUrl = "https://api2.kit-invest.ru/APIService.svc/"
 
+type Provider interface {
+	Call(method string, extra map[string]interface{}, v interface{}) error
+	SetDebug(debug bool)
+}
+
 type Client struct {
 	CompanyId int
 	Login     string

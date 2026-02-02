@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 
-	pbv1 "github.com/St1cky1/kit_vend/pkg/pb1"
 	"github.com/St1cky1/kit_vend/internal/usecase"
+	pbv1 "github.com/St1cky1/kit_vend/pkg/pb1"
 )
 
 type VendingMachineServiceServer struct {

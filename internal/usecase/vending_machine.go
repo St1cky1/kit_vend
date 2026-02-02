@@ -10,7 +10,7 @@ import (
 )
 
 type VendingMachineUseCase struct {
-	kitClient   *kit_vending.Client
+	kitClient   kit_vending.Provider
 	vmRepo      storage.VendingMachineRepository
 	saleRepo    storage.SaleRepository
 	actionRepo  storage.ActionRepository
@@ -20,7 +20,7 @@ type VendingMachineUseCase struct {
 }
 
 func NewVendingMachineUseCase(
-	kitClient *kit_vending.Client,
+	kitClient kit_vending.Provider,
 	vmRepo storage.VendingMachineRepository,
 	saleRepo storage.SaleRepository,
 	actionRepo storage.ActionRepository,

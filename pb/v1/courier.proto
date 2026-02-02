@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package api.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/St1cky1/kit_vend/pkg/pb1;pb1";
+
+// CourierService предоставляет методы для работы курьера с торговыми автоматами
+service CourierService {
+  // GetCells получает список ячеек автомата
+  rpc GetCells(GetCellsRequest) returns (GetCellsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/courier/vending-machines/{vending_machine_id}/cells"
+    };
+  };
+
+  // StartLoadSession начинает сессию загрузки товара
+  rpc StartLoadSession(StartLoadSessionRequest) returns (LoadSession) {
+    option (google.api.http) = {
+      post: "/api/v1/courier/load-sessions"
+      body: "*"
+    };
+  };
+
+  // LoadCell загружает товар в конкретную ячейку
+  rpc LoadCell(LoadCellRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/api/v1/courier/load-sessions/{session_id}/cells"
+      body: "*"
+    };
+  };
+
+  // CompleteLoadSession завершает сессию загрузки
+  rpc CompleteLoadSession(CompleteLoadSessionRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/api/v1/courier/load-sessions/{session_id}/complete"
+      body: "*"
+    };
+  };
+}
+
+message Cell {
+  string id = 1;
+  int32 vending_machine_id = 2;
+  string status = 3; // free | occupied | blocked
+  optional int32 goods_id = 4;
+}
+
+message GetCellsRequest {
+  int32 vending_machine_id = 1;
+}
+
+message GetCellsResponse {
+  repeated Cell cells = 1;
+}
+
+message StartLoadSessionRequest {
+  int32 vending_machine_id = 1;
+  int32 courier_id = 2;
+}
+
+message LoadSession {
+  int32 id = 1;
+  int32 vending_machine_id = 2;
+  int32 courier_id = 3;
+  string status = 4; // active | completed | cancelled
+  google.protobuf.Timestamp started_at = 5;
+  optional google.protobuf.Timestamp completed_at = 6;
+}
+
+message LoadCellRequest {
+  int32 session_id = 1;
+  string cell_id = 2;
+  int32 goods_id = 3;
+}
+
+message CompleteLoadSessionRequest {
+  int32 session_id = 1;
+}
