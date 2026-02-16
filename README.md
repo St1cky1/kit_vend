@@ -15,34 +15,32 @@
 
 ## Структура проекта
 
-```
+```text
 kit_vend/
 ├── cmd/
-│   └── server/                    # Точка входа приложения
-│       └── main.go               # Главный файл сервера
+│   └── server/                    # Точка входа приложения (main.go)
 ├── internal/
 │   ├── api/
 │   │   └── kit_vending/          # Клиент для интеграции с внешним API Kit Vending
-│   ├── entity/                   # Доменные модели (Entity), включая Cell и LoadSession
+│   ├── entity/                   # Доменные модели (Entity)
 │   ├── grpc/                     # Реализация gRPC сервисов
-│   │   ├── vending_machine_service.go
-│   │   └── courier_service.go     # Сервис для курьеров
-│   ├── storage/                  # Слой репозиториев (на данный момент используются mock-реализации)
+│   ├── storage/                  # Слой репозиториев (mock-реализации)
 │   └── usecase/                  # Бизнес-логика (Use Case слой)
-│       ├── vending_machine.go
-│       └── courier.go            # Логика загрузки товаров
 ├── pb/
 │   └── v1/                       # Protocol Buffer определения
-│       ├── vending_machine.proto # Proto-схема основного API
-│       └── courier.proto         # Proto-схема API курьера
 ├── pkg/
 │   ├── config/                   # Управление конфигурацией
+│   ├── constants/                # Общие константы
+│   ├── logger/                   # Настройка логирования (zap)
 │   └── pb1/                      # Сгенерированный Go-код из proto
 ├── bin/                          # Скомпилированные бинарные файлы
+├── docs/                         # Документация и API спецификации
+├── .env.example                  # Пример файла конфигурации
+├── Dockerfile                    # Docker-образ приложения
 ├── Makefile                      # Команды сборки и разработки
-├── docker-compose.yaml           # Конфигурация Docker для PostgreSQL
+├── docker-compose.yaml           # Конфигурация Docker (App + PostgreSQL)
 ├── go.mod                        # Модули Go
-└── go.sum                        # Хеши модулей
+└── repo.md                       # Обзор репозитория
 ```
 
 ## Используемые технологии
@@ -51,40 +49,40 @@ kit_vend/
 - **gRPC** — фреймворк для RPC коммуникации
 - **gRPC Gateway** — преобразование gRPC в REST API
 - **Protocol Buffers** — сериализация данных
-- **PostgreSQL 18** — база данных (в Docker)
+- **PostgreSQL 17** — база данных (в Docker)
 - **Структура Clean Architecture** — разделение на слои
 
 ## API Endpoints
 
-Все HTTP API доступны по адресу `http://localhost:8080/api/v1`
+Все HTTP API доступны по адресу `http://localhost:8080` (префикс `/api/v1` включен в пути)
 
 ### Торговые автоматы
-- **GET** `/vending-machines/{id}` — получить информацию об автомате по ID
-- **GET** `/vending-machines/{id}/remains` — получить остатки товаров в автомате
+- **GET** `/api/v1/vending-machines/{id}` — получить информацию об автомате по ID
+- **GET** `/api/v1/vending-machines/{id}/remains` — получить остатки товаров в автомате
 
 ### Продажи
-- **GET** `/sales` — получить продажи (параметры: `vending_machine_id`, `from_date`, `to_date`)
+- **GET** `/api/v1/sales` — получить продажи (параметры: `vending_machine_id`, `from_date`, `to_date`)
 
 ### Действия
-- **GET** `/actions` — получить действия (параметры: `vending_machine_id`, `from_date`, `to_date`)
+- **GET** `/api/v1/actions` — получить действия (параметры: `vending_machine_id`, `from_date`, `to_date`)
 
 ### События
-- **GET** `/events` — получить события (параметры: `vending_machine_id`, `from_date`, `to_date`)
+- **GET** `/api/v1/events` — получить события (параметры: `vending_machine_id`, `from_date`, `to_date`)
 
 ### Состояние оборудования
-- **GET** `/vm-states` — получить состояние всех торговых автоматов
+- **GET** `/api/v1/vm-states` — получить состояние всех торговых автоматов
 
 ### Команды
-- **POST** `/commands` — отправить команду на торговый автомат
+- **POST** `/api/v1/commands` — отправить команду на торговый автомат
   - Body: `{"command": {"vending_machine_id": int, "command_code": int}}`
 
 ### Курьерские функции (Загрузка товара)
-- **GET** `/courier/vending-machines/{vending_machine_id}/cells` — получить список ячеек автомата
-- **POST** `/courier/load-sessions` — начать сессию загрузки
+- **GET** `/api/v1/courier/vending-machines/{vending_machine_id}/cells` — получить список ячеек автомата
+- **POST** `/api/v1/courier/load-sessions` — начать сессию загрузки
   - Body: `{"vending_machine_id": int, "courier_id": int}`
-- **POST** `/courier/load-sessions/{session_id}/cells` — загрузить товар в ячейку
+- **POST** `/api/v1/courier/load-sessions/{session_id}/cells` — загрузить товар в ячейку
   - Body: `{"cell_id": "string", "goods_id": int}`
-- **POST** `/courier/load-sessions/{session_id}/complete` — завершить сессию загрузки (отправляет команду 26 в Kit Vending)
+- **POST** `/api/v1/courier/load-sessions/{session_id}/complete` — завершить сессию загрузки
 
 ### Здоровье
 - **GET** `/health` — проверка здоровья сервера
@@ -96,18 +94,19 @@ kit_vend/
 
 ## Конфигурация
 
-Сервис использует переменные окружения для конфигурации:
+Сервис использует переменные окружения для конфигурации. Создайте файл `.env` на основе `.env.example`:
 
-```
+```text
 DB_USER=postgres              # Пользователь БД
 DB_PASSWORD=password          # Пароль БД
 DB_NAME=kit_vend             # Название БД
+DB_HOST=localhost            # Хост БД (используйте 'db' для запуска в Docker)
 DB_PORT=5432                 # Порт БД
 SERVER_PORT=8080             # HTTP порт сервера
 LOG_LEVEL=info               # Уровень логирования (debug/info/warn/error)
-KIT_VENDING_COMPANY_ID=1234  # ID компании в Kit Vending API
-KIT_VENDING_LOGIN=login      # Логин для Kit Vending API
-KIT_VENDING_PASSWORD=pass    # Пароль для Kit Vending API
+KIT_COMPANY_ID=1234          # ID компании в Kit Vending API
+KIT_LOGIN=login              # Логин для Kit Vending API
+KIT_PASSWORD=pass            # Пароль для Kit Vending API
 ```
 
 ## Подготовка и запуск
@@ -115,7 +114,7 @@ KIT_VENDING_PASSWORD=pass    # Пароль для Kit Vending API
 ### Предварительные требования
 - Go 1.25.4+
 - Protocol Buffers compiler (protoc)
-- Docker & Docker Compose (для базы данных)
+- Docker & Docker Compose (для базы данных и контейнеризации)
 
 ### Установка зависимостей
 
@@ -123,7 +122,7 @@ KIT_VENDING_PASSWORD=pass    # Пароль для Kit Vending API
 go mod download
 ```
 
-### Запуск базы данных
+### Запуск через Docker Compose
 
 ```bash
 docker-compose up -d
@@ -135,9 +134,9 @@ docker-compose up -d
 make proto
 ```
 
-### Развертывание
+### Развертывание (локально)
 
-**Режим разработки** (с автоперезагрузкой):
+**Режим разработки** (с использованием `go run`):
 ```bash
 make dev
 ```
@@ -184,11 +183,10 @@ make run
    - Интеграция с внешним API (Kit Vending)
 
 4. **Storage Layer** (`internal/storage/`)
-   - Репозитории для доступа к данным
-   - На данный момент используются mock-реализации
+   - Репозитории для доступа к данным (используются mock-реализации)
 
 5. **Entity Layer** (`internal/entity/`)
-   - Доменные модели данных (VendingMachine, Sale, Cell, LoadSession и др.)
+   - Доменные модели данных
 
 6. **External API Integration** (`internal/api/`)
    - Клиент для интеграции с Kit Vending API
@@ -204,26 +202,6 @@ make run
 - ✅ REST API через gRPC Gateway функционален
 - ✅ Интеграция с внешним Kit Vending API
 - ✅ MVP загрузки товара курьером
+- ✅ Docker-контейнеризация (App + DB)
 - ⏳ Storage слой использует mock-реализации (требуется реальная БД интеграция)
 - ⏳ Юнит-тесты в разработке
-
-## Примеры использования
-
-### Получить список ячеек (Курьер)
-```bash
-curl http://localhost:8080/api/v1/courier/vending-machines/1/cells
-```
-
-### Начать сессию загрузки (Курьер)
-```bash
-curl -X POST http://localhost:8080/api/v1/courier/load-sessions \
-  -H "Content-Type: application/json" \
-  -d '{"vending_machine_id": 1, "courier_id": 1}'
-```
-
-### Завершить загрузку
-```bash
-curl -X POST http://localhost:8080/api/v1/courier/load-sessions/1/complete \
-  -H "Content-Type: application/json" \
-  -d '{}'
-```

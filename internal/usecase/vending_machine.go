@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"time"
 
 	"github.com/St1cky1/kit_vend/internal/api"
 	"github.com/St1cky1/kit_vend/internal/api/kit_vending"
@@ -39,16 +40,46 @@ func NewVendingMachineUseCase(
 	}
 }
 
+func (uc *VendingMachineUseCase) formatDate(dateStr string) string {
+	if dateStr == "" {
+		return ""
+	}
+	// Пытаемся распарсить как ISO 8601 (гггг-мм-дд)
+	t, err := time.Parse("2006-01-02", dateStr)
+	if err != nil {
+		// Пытаемся распарсить как ISO 8601 с временем
+		t, err = time.Parse(time.RFC3339, dateStr)
+		if err != nil {
+			return dateStr
+		}
+	}
+	return t.Format("02.01.2006 15:04:05")
+}
+
 // получение автомата по id
 func (uc *VendingMachineUseCase) GetVendingMachineByID(ctx context.Context, id int) (*entity.VendingMachine, error) {
-	return uc.vmRepo.GetByID(ctx, id)
+	var result api.GetVendingMachineByIdResponse
+	err := uc.kitClient.Call("GetVendingMachineById", map[string]interface{}{"Id": id}, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
+		return nil, err
+	}
+
+	return &entity.VendingMachine{
+		Id:        result.VendingMachine.Id,
+		Name:      result.VendingMachine.Name,
+		CompanyId: result.VendingMachine.CompanyId,
+	}, nil
 }
 
 // получение списка продаж
 func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Sale, error) {
 	filter := api.Filter{
-		UpDate: upDate,
-		ToDate: toDate,
+		UpDate: uc.formatDate(upDate),
+		ToDate: uc.formatDate(toDate),
 	}
 	if vendingMachineId > 0 {
 		filter.VendingMachineId = vendingMachineId
@@ -84,8 +115,8 @@ func (uc *VendingMachineUseCase) GetSales(ctx context.Context, vendingMachineId 
 // список действий (обслуживания и загрузки)
 func (uc *VendingMachineUseCase) GetActions(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Action, error) {
 	filter := api.Filter{
-		UpDate: upDate,
-		ToDate: toDate,
+		UpDate: uc.formatDate(upDate),
+		ToDate: uc.formatDate(toDate),
 	}
 	if vendingMachineId > 0 {
 		filter.VendingMachineId = vendingMachineId
@@ -117,7 +148,7 @@ func (uc *VendingMachineUseCase) GetActions(ctx context.Context, vendingMachineI
 // состояние всех автоматов
 func (uc *VendingMachineUseCase) GetVMStates(ctx context.Context) ([]entity.VMState, error) {
 	var result api.GetVMStatesResponse
-	err := uc.kitClient.Call("GetVMStates", nil, &result)
+	err := uc.kitClient.Call("GetVMStates", map[string]interface{}{}, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -148,8 +179,8 @@ func (uc *VendingMachineUseCase) GetVMStates(ctx context.Context) ([]entity.VMSt
 // события
 func (uc *VendingMachineUseCase) GetEvents(ctx context.Context, vendingMachineId int, upDate, toDate string) ([]entity.Event, error) {
 	filter := api.Filter{
-		UpDate: upDate,
-		ToDate: toDate,
+		UpDate: uc.formatDate(upDate),
+		ToDate: uc.formatDate(toDate),
 	}
 	if vendingMachineId > 0 {
 		filter.VendingMachineId = vendingMachineId

@@ -48,6 +48,9 @@ func NewCourierUseCase(
 func (uc *CourierUseCase) checkRole(ctx context.Context, userID int, requiredRole string) error {
 	user, err := uc.userRepo.GetByID(ctx, userID)
 	if err != nil {
+		return fmt.Errorf("failed to get user: %w", err)
+	}
+	if user == nil {
 		return ErrUnauthorized
 	}
 	if user.Role != requiredRole {
@@ -63,18 +66,21 @@ func (uc *CourierUseCase) GetCells(ctx context.Context, courierID int, vmID int)
 	return uc.cellRepo.GetByVendingMachineID(ctx, vmID)
 }
 
+// StartLoadSession начинает сессию загрузки
 func (uc *CourierUseCase) StartLoadSession(ctx context.Context, courierID int, vmID int) (*entity.LoadSession, error) {
 	if err := uc.checkRole(ctx, courierID, entity.RoleCourier); err != nil {
 		return nil, err
 	}
 
-	// Проверка статуса автомата
-	state, err := uc.vmStateRepo.GetByVendingMachineID(ctx, vmID)
+	// Проверка статуса автомата через реальный API
+	var result api.GetVendingMachineByIdResponse
+	err := uc.kitClient.Call("GetVendingMachineById", map[string]interface{}{"VendingMachineId": vmID}, &result)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get machine state: %w", err)
+		return nil, fmt.Errorf("failed to call API: %w", err)
 	}
-	if !state.IsOnline {
-		return nil, ErrMachineOffline
+
+	if err := api.CheckResultCode(result.ResultCode); err != nil {
+		return nil, fmt.Errorf("api error: %w", err)
 	}
 
 	// Проверка наличия активной сессии
@@ -104,6 +110,9 @@ func (uc *CourierUseCase) LoadCell(ctx context.Context, courierID int, sessionID
 
 	session, err := uc.sessionRepo.GetByID(ctx, sessionID)
 	if err != nil {
+		return fmt.Errorf("failed to get session: %w", err)
+	}
+	if session == nil {
 		return ErrSessionNotFound
 	}
 	if session.Status != entity.LoadSessionStatusActive {
@@ -130,6 +139,9 @@ func (uc *CourierUseCase) CompleteLoadSession(ctx context.Context, courierID int
 
 	session, err := uc.sessionRepo.GetByID(ctx, sessionID)
 	if err != nil {
+		return fmt.Errorf("failed to get session: %w", err)
+	}
+	if session == nil {
 		return ErrSessionNotFound
 	}
 	if session.Status != entity.LoadSessionStatusActive {

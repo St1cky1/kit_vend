@@ -8,7 +8,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
+	//"github.com/St1cky1/kit_vend/internal/api"
 
 	"github.com/St1cky1/kit_vend/internal/api"
 )
@@ -42,16 +45,18 @@ func (c *Client) SetDebug(debug bool) {
 	c.Debug = debug
 }
 
-// генерируем уникальные RequestID
+// генерируем уникальные RequestID в формате YYMMDDHHMMSS
 func (c *Client) generateRequestid() int64 {
-	return time.Now().UnixNano() / int64(time.Millisecond)
+	s := time.Now().Format("060102150405")
+	val, _ := strconv.ParseInt(s, 10, 64)
+	return val
 }
 
 // описываем функцию, которая возвращает значение функции MD5
 func (c *Client) makeSign(requestId int64) string {
 	raw := fmt.Sprintf("%d%s%d", c.CompanyId, c.Password, requestId)
 	hash := md5.Sum([]byte(raw))
-	return hex.EncodeToString(hash[:])
+	return strings.ToUpper(hex.EncodeToString(hash[:]))
 }
 
 func (c *Client) autPayload() api.Auth {
@@ -74,20 +79,21 @@ func (c *Client) Call(method string, extra map[string]interface{}, v interface{}
 	for k, v := range extra {
 		payload[k] = v
 	}
-	body, err := json.MarshalIndent(payload, "", " ")
+	body, err := json.Marshal(payload)
 	if err != nil {
 		return fmt.Errorf("marshal error: %w", err)
 	}
 
 	if c.Debug {
-		fmt.Printf("[DEBUG] Kit Vending API Request:\nURL: %s\nBody:\n%s\n", url, string(body))
+		fmt.Printf("[DEBUG] Kit Vending API Request:\nURL: %s\nBody: %s\n", url, string(body))
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
 
 	resp, err := c.Http.Do(req)
 	if err != nil {
@@ -108,8 +114,19 @@ func (c *Client) Call(method string, extra map[string]interface{}, v interface{}
 		fmt.Printf("[DEBUG] Kit Vending API Response:\n%s\n", string(respBody))
 	}
 
+	// Сначала проверяем ResultCode
+	var baseResp struct {
+		ResultCode int `json:"ResultCode"`
+	}
+	if err := json.Unmarshal(respBody, &baseResp); err == nil {
+		if err := api.CheckResponse(baseResp.ResultCode); err != nil {
+			return err
+		}
+	}
+
 	if err := json.Unmarshal(respBody, &v); err != nil {
 		return fmt.Errorf("decode error: %w", err)
 	}
+
 	return nil
 }

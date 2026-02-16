@@ -29,7 +29,7 @@ func (s *CourierServiceServer) GetCells(ctx context.Context, req *pbv1.GetCellsR
 
 	cells, err := s.uc.GetCells(ctx, courierID, int(req.VendingMachineId))
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	protoCells := make([]*pbv1.Cell, len(cells))
@@ -53,7 +53,7 @@ func (s *CourierServiceServer) GetCells(ctx context.Context, req *pbv1.GetCellsR
 func (s *CourierServiceServer) StartLoadSession(ctx context.Context, req *pbv1.StartLoadSessionRequest) (*pbv1.LoadSession, error) {
 	session, err := s.uc.StartLoadSession(ctx, int(req.CourierId), int(req.VendingMachineId))
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	res := &pbv1.LoadSession{
@@ -76,7 +76,7 @@ func (s *CourierServiceServer) LoadCell(ctx context.Context, req *pbv1.LoadCellR
 
 	err := s.uc.LoadCell(ctx, courierID, int(req.SessionId), req.CellId, int(req.GoodsId))
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	return &emptypb.Empty{}, nil
@@ -88,7 +88,7 @@ func (s *CourierServiceServer) CompleteLoadSession(ctx context.Context, req *pbv
 
 	err := s.uc.CompleteLoadSession(ctx, courierID, int(req.SessionId))
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	return &emptypb.Empty{}, nil

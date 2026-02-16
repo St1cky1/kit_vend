@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"net/http"
 
@@ -16,24 +17,25 @@ import (
 	"github.com/St1cky1/kit_vend/pkg/config"
 	"github.com/St1cky1/kit_vend/pkg/logger"
 	pbv1 "github.com/St1cky1/kit_vend/pkg/pb1"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Попробуем загрузить .env из текущей директории или на уровень выше
+	if err := godotenv.Load(); err != nil {
+		if err := godotenv.Load("../../.env"); err != nil {
+			fmt.Println("Warning: .env file not found, using system environment variables")
+		}
+	}
+
 	cfg := config.Load()
 	log := logger.NewLogger(cfg.LogLevel)
 
 	log.Info("Starting Kit Vending Backend", "http_port", cfg.Server.Port)
 
-	// В будущем для продакшена раскомментировать:
-	// kitClient := kit_vending.NewClient(cfg.KitVendingAPI.CompanyId, cfg.KitVendingAPI.Login, cfg.KitVendingAPI.Password)
-	
-	// Используем мок-клиент для тестирования:
-	kitClient := kit_vending.NewMockClient()
-
-	if cfg.LogLevel == "debug" {
-		kitClient.SetDebug(true)
-		log.Info("Debug mode enabled - Kit Vending API responses will be logged")
-	}
+	kitClient := kit_vending.NewClient(cfg.KitVendingAPI.CompanyId, cfg.KitVendingAPI.Login, cfg.KitVendingAPI.Password)
+	kitClient.SetDebug(true)
+	log.Info("Debug mode enabled - Kit Vending API requests/responses will be logged")
 
 	vmRepo := storage.NewMockVendingMachineRepository()
 	saleRepo := storage.NewMockSaleRepository()
@@ -96,7 +98,7 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/api/", gwmux)
+	mux.Handle("/", gwmux)
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)

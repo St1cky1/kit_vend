@@ -21,7 +21,7 @@ func NewVendingMachineServiceServer(uc *usecase.VendingMachineUseCase) *VendingM
 func (s *VendingMachineServiceServer) GetVendingMachineByID(ctx context.Context, req *pbv1.GetVendingMachineByIDRequest) (*pbv1.GetVendingMachineByIDResponse, error) {
 	vm, err := s.uc.GetVendingMachineByID(ctx, int(req.Id))
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	return &pbv1.GetVendingMachineByIDResponse{
@@ -36,7 +36,7 @@ func (s *VendingMachineServiceServer) GetVendingMachineByID(ctx context.Context,
 func (s *VendingMachineServiceServer) GetSales(ctx context.Context, req *pbv1.GetSalesRequest) (*pbv1.GetSalesResponse, error) {
 	sales, err := s.uc.GetSales(ctx, int(req.VendingMachineId), req.FromDate, req.ToDate)
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	protoSales := make([]*pbv1.Sale, len(sales))
@@ -61,7 +61,7 @@ func (s *VendingMachineServiceServer) GetSales(ctx context.Context, req *pbv1.Ge
 func (s *VendingMachineServiceServer) GetActions(ctx context.Context, req *pbv1.GetActionsRequest) (*pbv1.GetActionsResponse, error) {
 	actions, err := s.uc.GetActions(ctx, int(req.VendingMachineId), req.FromDate, req.ToDate)
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	protoActions := make([]*pbv1.Action, len(actions))
@@ -82,7 +82,7 @@ func (s *VendingMachineServiceServer) GetActions(ctx context.Context, req *pbv1.
 func (s *VendingMachineServiceServer) GetVMStates(ctx context.Context, req *pbv1.GetVMStatesRequest) (*pbv1.GetVMStatesResponse, error) {
 	states, err := s.uc.GetVMStates(ctx)
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	protoStates := make([]*pbv1.VMState, len(states))
@@ -109,7 +109,7 @@ func (s *VendingMachineServiceServer) GetVMStates(ctx context.Context, req *pbv1
 func (s *VendingMachineServiceServer) GetEvents(ctx context.Context, req *pbv1.GetEventsRequest) (*pbv1.GetEventsResponse, error) {
 	events, err := s.uc.GetEvents(ctx, int(req.VendingMachineId), req.FromDate, req.ToDate)
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	protoEvents := make([]*pbv1.Event, len(events))
@@ -131,7 +131,7 @@ func (s *VendingMachineServiceServer) GetEvents(ctx context.Context, req *pbv1.G
 func (s *VendingMachineServiceServer) SendCommand(ctx context.Context, req *pbv1.SendCommandRequest) (*pbv1.SendCommandResponse, error) {
 	err := s.uc.SendCommand(ctx, int(req.Command.VendingMachineId), int(req.Command.CommandCode))
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	return &pbv1.SendCommandResponse{
@@ -143,7 +143,7 @@ func (s *VendingMachineServiceServer) SendCommand(ctx context.Context, req *pbv1
 func (s *VendingMachineServiceServer) GetVendingMachineRemains(ctx context.Context, req *pbv1.GetVendingMachineRemainsRequest) (*pbv1.GetVendingMachineRemainsResponse, error) {
 	remains, err := s.uc.GetVendingMachineRemains(ctx, int(req.Id))
 	if err != nil {
-		return nil, err
+		return nil, mapError(err)
 	}
 
 	protoRemains := make([]*pbv1.VendingMachineRemains, len(remains))

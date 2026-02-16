@@ -38,14 +38,14 @@ func Load() *Config {
 		Database: Database{
 			Host:     getEnv("DB_HOST", "localhost"),
 			Port:     getEnvInt("DB_PORT", 5432),
-			User:     getEnv("DB_USER", "user"),
-			Password: getEnv("DB_PASSWORD", "pass"),
+			User:     getEnv("DB_USER", ""),
+			Password: getEnv("DB_PASSWORD", ""),
 			DBName:   getEnv("DB_NAME", "kit_vend"),
 		},
 		KitVendingAPI: KitVendingAPI{
-			CompanyId: getEnvInt("KIT_COMPANY_ID", 380649),
-			Login:     getEnv("KIT_LOGIN", "demotest"),
-			Password:  getEnv("KIT_PASSWORD", "vendor734102"),
+			CompanyId: getEnvInt("KIT_COMPANY_ID", 0),
+			Login:     getEnv("KIT_LOGIN", ""),
+			Password:  getEnv("KIT_PASSWORD", ""),
 		},
 		LogLevel: getEnv("LOG_LEVEL", "info"),
 	}

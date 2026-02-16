@@ -39,6 +39,11 @@ type GetVendingMachinesResponse struct {
 	VendingMachines []VendingMachine `json:"VendingMachines"`
 }
 
+type GetVendingMachineByIdResponse struct {
+	ResultCode     int            `json:"ResultCode"`
+	VendingMachine VendingMachine `json:"VendingMachine"`
+}
+
 type Filter struct {
 	UpDate           string `json:"UpDate"`
 	ToDate           string `json:"ToDate"`
