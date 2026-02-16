@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 	//"github.com/St1cky1/kit_vend/internal/api"
@@ -45,11 +44,9 @@ func (c *Client) SetDebug(debug bool) {
 	c.Debug = debug
 }
 
-// генерируем уникальные RequestID в формате YYMMDDHHMMSS
+// генерируем уникальные RequestID на основе UnixNano
 func (c *Client) generateRequestid() int64 {
-	s := time.Now().Format("060102150405")
-	val, _ := strconv.ParseInt(s, 10, 64)
-	return val
+	return time.Now().UnixNano()
 }
 
 // описываем функцию, которая возвращает значение функции MD5
@@ -84,16 +81,17 @@ func (c *Client) Call(method string, extra map[string]interface{}, v interface{}
 		return fmt.Errorf("marshal error: %w", err)
 	}
 
-	if c.Debug {
-		fmt.Printf("[DEBUG] Kit Vending API Request:\nURL: %s\nBody: %s\n", url, string(body))
-	}
-
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	if err != nil {
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
+
+	if c.Debug {
+		headers, _ := json.MarshalIndent(req.Header, "", "  ")
+		fmt.Printf("[DEBUG] Kit Vending API Request:\nURL: %s\nHeaders: %s\nBody: %s\n", url, string(headers), string(body))
+	}
 
 	resp, err := c.Http.Do(req)
 	if err != nil {

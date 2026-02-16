@@ -59,7 +59,7 @@ func (uc *VendingMachineUseCase) formatDate(dateStr string) string {
 // получение автомата по id
 func (uc *VendingMachineUseCase) GetVendingMachineByID(ctx context.Context, id int) (*entity.VendingMachine, error) {
 	var result api.GetVendingMachineByIdResponse
-	err := uc.kitClient.Call("GetVendingMachineById", map[string]interface{}{"Id": id}, &result)
+	err := uc.kitClient.Call("GetVendingMachineById", map[string]interface{}{"VendingMachineId": id}, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -233,7 +233,7 @@ func (uc *VendingMachineUseCase) SendCommand(ctx context.Context, vendingMachine
 // остатки товара
 func (uc *VendingMachineUseCase) GetVendingMachineRemains(ctx context.Context, id int) ([]entity.VendingMachineRemains, error) {
 	var result api.GetVendingMachineRemainsResponse
-	err := uc.kitClient.Call("GetVendingMachineRemains", map[string]interface{}{"Id": id}, &result)
+	err := uc.kitClient.Call("GetVendingMachineRemains", map[string]interface{}{"VendingMachineId": id}, &result)
 	if err != nil {
 		return nil, err
 	}
